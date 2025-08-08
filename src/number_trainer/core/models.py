@@ -39,3 +39,4 @@ class Result:
     user_answer: int
     correct_answer: int
     message: str
+    time_taken: float = 0.0

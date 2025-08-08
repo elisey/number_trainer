@@ -94,23 +94,19 @@ class MathTrainer:
 
         return self.current_exercise
 
-    def check_answer(self, user_answer: int) -> Result:
+    def check_answer(self, exercise: Exercise, user_answer: int, time_taken: float = 0.0) -> Result:
         """
         Проверяет ответ пользователя
 
         Args:
+            exercise: Упражнение для проверки
             user_answer: Ответ пользователя
+            time_taken: Время выполнения в секундах
 
         Returns:
             Объект Result с результатом проверки
-
-        Raises:
-            ValueError: Если нет текущего упражнения
         """
-        if self.current_exercise is None:
-            raise ValueError("Нет активного упражнения. Сначала создайте упражнение.")
-
-        is_correct = user_answer == self.current_exercise.correct_answer
+        is_correct = user_answer == exercise.correct_answer
 
         # Обновляем статистику
         self.stats["total_exercises"] += 1
@@ -120,14 +116,15 @@ class MathTrainer:
         else:
             self.stats["incorrect_answers"] += 1
             message = (
-                f"Неправильно. Правильный ответ: {self.current_exercise.correct_answer}"
+                f"Неправильно. Правильный ответ: {exercise.correct_answer}"
             )
 
         return Result(
             is_correct=is_correct,
             user_answer=user_answer,
-            correct_answer=self.current_exercise.correct_answer,
+            correct_answer=exercise.correct_answer,
             message=message,
+            time_taken=time_taken,
         )
 
     def get_current_exercise_text(self) -> str:

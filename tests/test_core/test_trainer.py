@@ -110,7 +110,7 @@ class TestMathTrainer:
         trainer = MathTrainer()
         exercise = trainer.generate_exercise()
 
-        result = trainer.check_answer(exercise.correct_answer)
+        result = trainer.check_answer(exercise, exercise.correct_answer)
 
         assert isinstance(result, Result)
         assert result.is_correct is True
@@ -129,7 +129,7 @@ class TestMathTrainer:
         exercise = trainer.generate_exercise()
         wrong_answer = exercise.correct_answer + 1
 
-        result = trainer.check_answer(wrong_answer)
+        result = trainer.check_answer(exercise, wrong_answer)
 
         assert isinstance(result, Result)
         assert result.is_correct is False
@@ -144,11 +144,12 @@ class TestMathTrainer:
         assert trainer.stats["incorrect_answers"] == 1
 
     def test_check_answer_no_exercise(self):
-        """Тест проверки ответа без активного упражнения"""
+        """Тест проверки ответа с None упражнением"""
         trainer = MathTrainer()
 
-        with pytest.raises(ValueError, match="Нет активного упражнения"):
-            trainer.check_answer(42)
+        # Теперь API требует упражнение как параметр, поэтому тестируем с None
+        with pytest.raises(AttributeError):
+            trainer.check_answer(None, 42)
 
     def test_get_current_exercise_text(self):
         """Тест получения текста текущего упражнения"""
@@ -183,10 +184,10 @@ class TestMathTrainer:
         # Решаем несколько упражнений
         for _ in range(4):
             exercise = trainer.generate_exercise()
-            trainer.check_answer(exercise.correct_answer)  # Правильный ответ
+            trainer.check_answer(exercise, exercise.correct_answer)  # Правильный ответ
 
         exercise = trainer.generate_exercise()
-        trainer.check_answer(exercise.correct_answer + 1)  # Неправильный ответ
+        trainer.check_answer(exercise, exercise.correct_answer + 1)  # Неправильный ответ
 
         stats = trainer.get_stats()
         assert stats["total_exercises"] == 5
@@ -200,7 +201,7 @@ class TestMathTrainer:
 
         # Создаем некоторую статистику
         exercise = trainer.generate_exercise()
-        trainer.check_answer(exercise.correct_answer)
+        trainer.check_answer(exercise, exercise.correct_answer)
 
         assert trainer.stats["total_exercises"] == 1
 
@@ -291,11 +292,11 @@ class TestIntegration:
 
             # Иногда отвечаем правильно, иногда нет
             if i % 2 == 0:
-                result = trainer.check_answer(exercise.correct_answer)
+                result = trainer.check_answer(exercise, exercise.correct_answer)
                 assert result.is_correct is True
                 correct_count += 1
             else:
-                result = trainer.check_answer(exercise.correct_answer + 1)
+                result = trainer.check_answer(exercise, exercise.correct_answer + 1)
                 assert result.is_correct is False
 
         # Проверяем финальную статистику
