@@ -16,4 +16,9 @@ wheels/
 htmlcov/
 .coverage
 
+# macOS
+.DS_Store
+.DS_Store?
+._*
+
 .task
