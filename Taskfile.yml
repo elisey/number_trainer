@@ -39,6 +39,11 @@ tasks:
     cmds:
       - "{{.UV_CMD}} run {{.PYTHON_CMD}} -m src.number_trainer.cli.console"
 
+  run-web:
+    desc: "Запустить веб-сервер (браузерная версия)"
+    cmds:
+      - "{{.UV_CMD}} run {{.PYTHON_CMD}} web_main.py"
+
   # Тестирование
   test:
     desc: "Запустить все тесты"

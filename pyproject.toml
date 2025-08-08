@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "Number training application with tkinter GUI"
 readme = "README.md"
 requires-python = ">=3.8.1"
-dependencies = []
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+]
 
 [project.optional-dependencies]
 test = ["pytest>=7.0.0", "pytest-cov>=4.0.0"]
@@ -13,6 +16,7 @@ dev = ["ruff>=0.1.0", "mypy>=1.0.0"]
 [project.scripts]
 number-trainer = "main:main"
 number-trainer-console = "src.number_trainer.cli.console:run_console_trainer"
+number-trainer-web = "src.number_trainer.web.main:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -32,6 +36,7 @@ dev = [
 test = [
     "pytest>=8.3.5",
     "pytest-cov>=5.0.0",
+    "httpx>=0.25.0",
 ]
 
 [tool.pytest.ini_options]
