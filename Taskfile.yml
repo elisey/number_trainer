@@ -1,0 +1,201 @@
+version: "3"
+
+vars:
+  PROJECT_NAME: number-trainer
+  PYTHON_CMD: python3
+  UV_CMD: uv
+
+tasks:
+  default:
+    desc: "Показать доступные команды"
+    cmds:
+      - task --list
+
+  # Установка и настройка
+  install:
+    desc: "Установить все зависимости проекта"
+    cmds:
+      - "{{.UV_CMD}} sync"
+      - "{{.UV_CMD}} add --group test pytest pytest-cov"
+    sources:
+      - pyproject.toml
+    generates:
+      - uv.lock
+
+  install-dev:
+    desc: "Установить зависимости для разработки"
+    cmds:
+      - "{{.UV_CMD}} add --group dev black isort flake8 mypy"
+    deps: [install]
+
+  # Запуск приложения
+  run:
+    desc: "Запустить GUI приложение"
+    cmds:
+      - "{{.UV_CMD}} run {{.PYTHON_CMD}} main.py"
+
+  run-console:
+    desc: "Запустить консольную версию тренажера"
+    cmds:
+      - "{{.UV_CMD}} run {{.PYTHON_CMD}} -m src.number_trainer.cli.console"
+
+  # Тестирование
+  test:
+    desc: "Запустить все тесты"
+    cmds:
+      - "{{.UV_CMD}} run pytest tests/ -v"
+    sources:
+      - "src/**/*.py"
+      - "tests/**/*.py"
+
+  test-cov:
+    desc: "Запустить тесты с покрытием кода"
+    cmds:
+      - "{{.UV_CMD}} run pytest test_math_trainer.py --cov=math_trainer --cov-report=term-missing --cov-report=html"
+    sources:
+      - "*.py"
+      - "test_*.py"
+    generates:
+      - htmlcov/
+
+  test-watch:
+    desc: "Запустить тесты в режиме наблюдения"
+    cmds:
+      - "{{.UV_CMD}} run pytest test_math_trainer.py -v --tb=short -x"
+    watch: true
+    sources:
+      - "*.py"
+      - "test_*.py"
+
+  # Качество кода
+  lint:
+    desc: "Проверить код линтерами"
+    deps: [install-dev]
+    cmds:
+      - "{{.UV_CMD}} run flake8 *.py --max-line-length=88 --extend-ignore=E203,W503"
+      - "{{.UV_CMD}} run mypy *.py --ignore-missing-imports"
+
+  format:
+    desc: "Отформатировать код"
+    deps: [install-dev]
+    cmds:
+      - "{{.UV_CMD}} run isort *.py"
+      - "{{.UV_CMD}} run black *.py"
+
+  format-check:
+    desc: "Проверить форматирование кода"
+    deps: [install-dev]
+    cmds:
+      - "{{.UV_CMD}} run isort --check-only *.py"
+      - "{{.UV_CMD}} run black --check *.py"
+
+  # CI/CD команды
+  ci:
+    desc: "Запустить все проверки как в CI"
+    cmds:
+      - task: format-check
+      - task: lint
+      - task: test-cov
+
+  # Очистка
+  clean:
+    desc: "Очистить временные файлы"
+    cmds:
+      - rm -rf __pycache__/
+      - rm -rf .pytest_cache/
+      - rm -rf htmlcov/
+      - rm -rf .coverage
+      - rm -rf *.pyc
+      - rm -rf .mypy_cache/
+
+  clean-all:
+    desc: "Полная очистка включая виртуальное окружение"
+    cmds:
+      - task: clean
+      - rm -rf .venv/
+      - rm -f uv.lock
+
+  # Сборка и развертывание
+  build:
+    desc: "Собрать проект"
+    cmds:
+      - "{{.UV_CMD}} build"
+    sources:
+      - "*.py"
+      - pyproject.toml
+    generates:
+      - dist/
+
+  # Разработка
+  dev:
+    desc: "Настроить среду разработки"
+    cmds:
+      - task: install-dev
+      - task: format
+      - task: test
+      - echo "✅ Среда разработки готова!"
+
+  # Информация о проекте
+  info:
+    desc: "Показать информацию о проекта"
+    cmds:
+      - echo "Проект{{":"}} {{.PROJECT_NAME}}"
+      - echo "Python{{":"}} $({{.PYTHON_CMD}} --version)"
+      - echo "UV{{":"}} $({{.UV_CMD}} --version)"
+      - echo "Структура проекта{{":"}}"
+      - find . -name "*.py" -o -name "*.toml" -o -name "*.yml" -o -name "*.md" | head -10
+
+  # Демонстрация
+  demo:
+    desc: "Запустить демонстрацию math_trainer"
+    cmds:
+      - echo "🧮 Демонстрация Number Trainer"
+      - echo "Запускаем несколько примеров..."
+      - "{{.UV_CMD}} run {{.PYTHON_CMD}} math_trainer.py"
+
+  # Проверка здоровья проекта
+  health:
+    desc: "Проверить здоровье проекта"
+    cmds:
+      - echo "🔍 Проверка здоровья проекта..."
+      - echo "📁 Файлы проекта{{":"}}"
+      - ls -la *.py *.toml *.md 2>/dev/null || echo "Некоторые файлы отсутствуют"
+      - echo "🧪 Проверка импортов{{":"}}"
+      - "{{.UV_CMD}} run {{.PYTHON_CMD}} -c \"import math_trainer; print('✅ math_trainer OK')\""
+      - "{{.UV_CMD}} run {{.PYTHON_CMD}} -c \"import tkinter; print('✅ tkinter OK')\""
+      - echo "✅ Проверка завершена"
+
+  # Помощь
+  help:
+    desc: "Показать подробную помощь"
+    cmds:
+      - echo "🚀 Number Trainer - Помощь по командам"
+      - echo ""
+      - echo "📦 УСТАНОВКА{{":"}}"
+      - echo "  task install     - Установить зависимости"
+      - echo "  task install-dev - Установить dev зависимости"
+      - echo "  task dev         - Настроить среду разработки"
+      - echo ""
+      - echo "🏃 ЗАПУСК{{":"}}"
+      - echo "  task run         - Запустить GUI приложение"
+      - echo "  task run-console - Запустить консольную версию"
+      - echo "  task demo        - Показать демонстрацию"
+      - echo ""
+      - echo "🧪 ТЕСТИРОВАНИЕ{{":"}}"
+      - echo "  task test        - Запустить тесты"
+      - echo "  task test-cov    - Тесты с покрытием"
+      - echo "  task test-watch  - Тесты в режиме наблюдения"
+      - echo ""
+      - echo "🔧 КАЧЕСТВО КОДА{{":"}}"
+      - echo "  task lint        - Проверить линтерами"
+      - echo "  task format      - Отформатировать код"
+      - echo "  task ci          - Все проверки CI"
+      - echo ""
+      - echo "🧹 ОЧИСТКА{{":"}}"
+      - echo "  task clean       - Очистить временные файлы"
+      - echo "  task clean-all   - Полная очистка"
+      - echo ""
+      - echo "ℹ️  ИНФОРМАЦИЯ{{":"}}"
+      - echo "  task info        - Информация о проекте"
+      - echo "  task health      - Проверка здоровья"
+      - echo "  task help        - Эта справка"
