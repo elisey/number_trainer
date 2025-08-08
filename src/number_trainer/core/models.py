@@ -7,12 +7,13 @@
 - Result: модель результата проверки ответа
 """
 
-from enum import Enum
 from dataclasses import dataclass
+from enum import Enum
 
 
 class Operation(Enum):
     """Математические операции"""
+
     ADDITION = "+"
     SUBTRACTION = "-"
 
@@ -20,11 +21,12 @@ class Operation(Enum):
 @dataclass
 class Exercise:
     """Математическое упражнение"""
+
     first_number: int
     second_number: int
     operation: Operation
     correct_answer: int
-    
+
     def __str__(self) -> str:
         return f"{self.first_number} {self.operation.value} {self.second_number} = ?"
 
@@ -32,6 +34,7 @@ class Exercise:
 @dataclass
 class Result:
     """Результат проверки ответа"""
+
     is_correct: bool
     user_answer: int
     correct_answer: int

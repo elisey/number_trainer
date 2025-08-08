@@ -5,13 +5,14 @@
 """
 
 import tkinter as tk
+
 from src.number_trainer.gui.app import NumberTrainerApp
 
 
-def main():
+def main() -> None:
     """Main application entry point"""
     root = tk.Tk()
-    app = NumberTrainerApp(root)
+    NumberTrainerApp(root)
     root.mainloop()
 
 

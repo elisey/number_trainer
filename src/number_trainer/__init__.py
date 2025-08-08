@@ -10,7 +10,7 @@ Number Trainer - Математический тренажер для изуче
 __version__ = "0.1.0"
 __author__ = "Number Trainer Team"
 
-from .core.models import Exercise, Result, Operation
+from .core.models import Exercise, Operation, Result
 from .core.trainer import MathTrainer
 
 __all__ = ["Exercise", "Result", "Operation", "MathTrainer"]

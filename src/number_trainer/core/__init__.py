@@ -6,7 +6,7 @@ Core модуль - содержит основную бизнес-логику 
 - trainer: основной класс MathTrainer
 """
 
-from .models import Exercise, Result, Operation
+from .models import Exercise, Operation, Result
 from .trainer import MathTrainer
 
 __all__ = ["Exercise", "Result", "Operation", "MathTrainer"]

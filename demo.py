@@ -8,11 +8,11 @@
 from src.number_trainer.cli.console import run_console_trainer
 
 
-def main():
+def main() -> None:
     """Запуск демо-версии тренажера"""
     print("🎯 Демо Number Trainer")
     print("=" * 30)
-    
+
     # Запускаем консольную версию с настройками по умолчанию
     run_console_trainer(min_digits=1, max_digits=3, num_exercises=10)
 

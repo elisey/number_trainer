@@ -51,43 +51,43 @@ tasks:
   test-cov:
     desc: "Запустить тесты с покрытием кода"
     cmds:
-      - "{{.UV_CMD}} run pytest test_math_trainer.py --cov=math_trainer --cov-report=term-missing --cov-report=html"
+      - "{{.UV_CMD}} run pytest tests/ --cov=src/number_trainer --cov-report=term-missing --cov-report=html"
     sources:
-      - "*.py"
-      - "test_*.py"
+      - "src/**/*.py"
+      - "tests/**/*.py"
     generates:
       - htmlcov/
 
   test-watch:
     desc: "Запустить тесты в режиме наблюдения"
     cmds:
-      - "{{.UV_CMD}} run pytest test_math_trainer.py -v --tb=short -x"
+      - "{{.UV_CMD}} run pytest tests/ -v --tb=short -x"
     watch: true
     sources:
-      - "*.py"
-      - "test_*.py"
+      - "src/**/*.py"
+      - "tests/**/*.py"
 
   # Качество кода
   lint:
     desc: "Проверить код линтерами"
     deps: [install-dev]
     cmds:
-      - "{{.UV_CMD}} run flake8 *.py --max-line-length=88 --extend-ignore=E203,W503"
-      - "{{.UV_CMD}} run mypy *.py --ignore-missing-imports"
+      - "{{.UV_CMD}} run ruff check src/ tests/ main.py demo.py"
+      - "{{.UV_CMD}} run mypy --package number_trainer --ignore-missing-imports"
+      - "{{.UV_CMD}} run mypy main.py demo.py --ignore-missing-imports"
 
   format:
     desc: "Отформатировать код"
     deps: [install-dev]
     cmds:
-      - "{{.UV_CMD}} run isort *.py"
-      - "{{.UV_CMD}} run black *.py"
+      - "{{.UV_CMD}} run ruff format src/ tests/ main.py demo.py"
 
   format-check:
     desc: "Проверить форматирование кода"
     deps: [install-dev]
     cmds:
-      - "{{.UV_CMD}} run isort --check-only *.py"
-      - "{{.UV_CMD}} run black --check *.py"
+      - "{{.UV_CMD}} run ruff format --check src/ tests/ main.py demo.py"
+      - "{{.UV_CMD}} run ruff check src/ tests/ main.py demo.py"
 
   # CI/CD команды
   ci:
@@ -107,6 +107,7 @@ tasks:
       - rm -rf .coverage
       - rm -rf *.pyc
       - rm -rf .mypy_cache/
+      - rm -rf .ruff_cache/
 
   clean-all:
     desc: "Полная очистка включая виртуальное окружение"
