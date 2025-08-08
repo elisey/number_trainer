@@ -118,7 +118,7 @@ def setup_styles() -> None:
     # Стили для полей ввода
     style.configure(
         "Modern.TEntry",
-        font=("SF Pro Display", 18),
+        font=("SF Pro Display", 24),
         foreground=COLORS["text_primary"],
         fieldbackground=COLORS["surface"],
         borderwidth=2,
@@ -131,6 +131,24 @@ def setup_styles() -> None:
         "Modern.TEntry",
         focuscolor=[("focus", COLORS["primary"])],
         bordercolor=[("focus", COLORS["primary"]), ("!focus", COLORS["border"])],
+    )
+    
+    # Стиль для поля ввода с ошибкой
+    style.configure(
+        "Error.TEntry",
+        font=("SF Pro Display", 24),
+        foreground=COLORS["error"],
+        fieldbackground=COLORS["surface"],
+        borderwidth=2,
+        relief="flat",
+        insertcolor=COLORS["primary"],
+        padding=(16, 12),
+    )
+    
+    style.map(
+        "Error.TEntry",
+        focuscolor=[("focus", COLORS["error"])],
+        bordercolor=[("focus", COLORS["error"]), ("!focus", COLORS["error"])],
     )
     
     # Стили для статистики
@@ -162,7 +180,7 @@ def get_fonts() -> dict:
         "exercise": ("SF Pro Display", 28, "bold"),
         "button": ("SF Pro Display", 14, "bold"),
         "text": ("SF Pro Display", 14),
-        "input": ("SF Pro Display", 18),
+        "input": ("SF Pro Display", 24),
         "stats": ("SF Pro Display", 14),
         "stats_value": ("SF Pro Display", 20, "bold"),
     }

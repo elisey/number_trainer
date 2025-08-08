@@ -7,12 +7,20 @@
 import tkinter as tk
 from tkinter import ttk
 from typing import Optional
+from enum import Enum
 import threading
 import time
 
 from ..core.trainer import MathTrainer
 from ..core.models import Exercise, Result
 from .styles import get_fonts, get_colors, setup_styles
+
+
+class AppState(Enum):
+    """Состояния приложения"""
+    WELCOME = "welcome"
+    EXERCISE = "exercise"
+    RESULT = "result"
 
 
 class NumberTrainerApp:
@@ -22,6 +30,7 @@ class NumberTrainerApp:
         self.root = root
         self.trainer = MathTrainer()
         self.current_exercise: Optional[Exercise] = None
+        self.current_state = AppState.WELCOME
         self.colors = get_colors()
         
         # Настройка окна
@@ -168,6 +177,7 @@ class NumberTrainerApp:
 
     def show_welcome_screen(self) -> None:
         """Показывает экран приветствия"""
+        self.current_state = AppState.WELCOME
         self.clear_content()
         
         # Приветственное сообщение
@@ -222,6 +232,7 @@ class NumberTrainerApp:
 
     def show_exercise(self) -> None:
         """Показывает новое упражнение"""
+        self.current_state = AppState.EXERCISE
         self.clear_content()
         
         # Генерируем упражнение
@@ -245,7 +256,8 @@ class NumberTrainerApp:
             textvariable=self.answer_var,
             style="Modern.TEntry",
             justify="center",
-            width=10
+            width=8,
+            font=("SF Pro Display", 24)
         )
         self.answer_entry.pack(pady=20)
         self.answer_entry.focus()
@@ -312,6 +324,7 @@ class NumberTrainerApp:
 
     def show_result(self, result: Result, skipped: bool = False) -> None:
         """Показывает результат проверки ответа"""
+        self.current_state = AppState.RESULT
         self.clear_content()
         
         if skipped:
@@ -358,9 +371,6 @@ class NumberTrainerApp:
         )
         continue_btn.pack(pady=40)
         continue_btn.focus()
-        
-        # Автопереход через 3 секунды
-        self.root.after(3000, self.show_exercise)
 
     def show_error_message(self, message: str) -> None:
         """Показывает сообщение об ошибке"""
@@ -390,6 +400,27 @@ class NumberTrainerApp:
 
     def bind_keyboard_shortcuts(self) -> None:
         """Привязывает горячие клавиши"""
-        self.root.bind('<Return>', lambda e: self.check_answer())
-        self.root.bind('<Escape>', lambda e: self.show_welcome_screen())
+        self.root.bind('<Return>', lambda e: self.handle_enter_key())
+        self.root.bind('<Escape>', lambda e: self.handle_exit_key())
         self.root.bind('<Control-n>', lambda e: self.show_exercise())
+    
+    def handle_enter_key(self) -> None:
+        """Обрабатывает нажатие клавиши Enter в зависимости от текущего состояния"""
+        if self.current_state == AppState.EXERCISE:
+            self.check_answer()
+        elif self.current_state == AppState.RESULT:
+            self.show_exercise()
+    
+    def handle_exit_key(self) -> None:
+        """Обрабатывает нажатие клавиши Escape в зависимости от текущего состояния"""
+        if self.current_state == AppState.WELCOME:
+            # На экране приветствия - выход из программы
+            self.exit_application()
+        else:
+            # Во время упражнения или результата - возврат на экран приветствия
+            self.show_welcome_screen()
+    
+    def exit_application(self) -> None:
+        """Закрывает приложение"""
+        self.root.quit()
+        self.root.destroy()
