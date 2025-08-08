@@ -32,7 +32,7 @@ def run_console_trainer(
 
         try:
             user_answer = int(input("Ваш ответ: "))
-            result = trainer.check_answer(user_answer)
+            result = trainer.check_answer(exercise, user_answer)
             print(f"Результат: {result.message}")
         except ValueError:
             print("Ошибка: введите целое число")

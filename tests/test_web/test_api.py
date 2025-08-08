@@ -1,7 +1,7 @@
 """Tests for web API endpoints."""
 
-import pytest
 from fastapi.testclient import TestClient
+
 from src.number_trainer.web.app import app
 
 client = TestClient(app)
@@ -28,7 +28,7 @@ def test_create_exercise():
     """Test creating a new exercise."""
     response = client.post("/api/exercise/new", json={"difficulty": 1})
     assert response.status_code == 200
-    
+
     data = response.json()
     assert "exercise_id" in data
     assert "question" in data
@@ -44,10 +44,9 @@ def test_create_exercise_invalid_difficulty():
 
 def test_check_answer_not_found():
     """Test checking answer for non-existent exercise."""
-    response = client.post("/api/exercise/check", json={
-        "exercise_id": "non-existent",
-        "answer": 42
-    })
+    response = client.post(
+        "/api/exercise/check", json={"exercise_id": "non-existent", "answer": 42}
+    )
     assert response.status_code == 404
 
 
@@ -57,15 +56,18 @@ def test_exercise_workflow():
     create_response = client.post("/api/exercise/new", json={"difficulty": 1})
     assert create_response.status_code == 200
     exercise = create_response.json()
-    
+
     # Check answer (we don't know the correct answer, so just test the endpoint)
-    check_response = client.post("/api/exercise/check", json={
-        "exercise_id": exercise["exercise_id"],
-        "answer": 999,  # Likely wrong answer
-        "time_taken": 5.0
-    })
+    check_response = client.post(
+        "/api/exercise/check",
+        json={
+            "exercise_id": exercise["exercise_id"],
+            "answer": 999,  # Likely wrong answer
+            "time_taken": 5.0,
+        },
+    )
     assert check_response.status_code == 200
-    
+
     result = check_response.json()
     assert "correct" in result
     assert "correct_answer" in result
@@ -77,7 +79,7 @@ def test_get_stats():
     """Test getting statistics."""
     response = client.get("/api/stats")
     assert response.status_code == 200
-    
+
     data = response.json()
     assert "total_exercises" in data
     assert "correct_answers" in data

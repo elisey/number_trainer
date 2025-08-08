@@ -187,7 +187,9 @@ class TestMathTrainer:
             trainer.check_answer(exercise, exercise.correct_answer)  # Правильный ответ
 
         exercise = trainer.generate_exercise()
-        trainer.check_answer(exercise, exercise.correct_answer + 1)  # Неправильный ответ
+        trainer.check_answer(
+            exercise, exercise.correct_answer + 1
+        )  # Неправильный ответ
 
         stats = trainer.get_stats()
         assert stats["total_exercises"] == 5

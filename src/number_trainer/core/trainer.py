@@ -94,7 +94,9 @@ class MathTrainer:
 
         return self.current_exercise
 
-    def check_answer(self, exercise: Exercise, user_answer: int, time_taken: float = 0.0) -> Result:
+    def check_answer(
+        self, exercise: Exercise, user_answer: int, time_taken: float = 0.0
+    ) -> Result:
         """
         Проверяет ответ пользователя
 
@@ -115,9 +117,7 @@ class MathTrainer:
             message = "Правильно! Отличная работа!"
         else:
             self.stats["incorrect_answers"] += 1
-            message = (
-                f"Неправильно. Правильный ответ: {exercise.correct_answer}"
-            )
+            message = f"Неправильно. Правильный ответ: {exercise.correct_answer}"
 
         return Result(
             is_correct=is_correct,

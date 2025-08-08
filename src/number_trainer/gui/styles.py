@@ -3,23 +3,21 @@
 Содержит настройки внешнего вида интерфейса в минималистичном стиле.
 """
 
-import tkinter as tk
 from tkinter import ttk
-
 
 # Современная цветовая палитра
 COLORS = {
-    "primary": "#2563eb",      # Синий
-    "primary_hover": "#1d4ed8", # Темнее синий
-    "success": "#10b981",     # Зеленый
-    "error": "#ef4444",       # Красный
-    "warning": "#f59e0b",     # Оранжевый
+    "primary": "#2563eb",  # Синий
+    "primary_hover": "#1d4ed8",  # Темнее синий
+    "success": "#10b981",  # Зеленый
+    "error": "#ef4444",  # Красный
+    "warning": "#f59e0b",  # Оранжевый
     "background": "#f8fafc",  # Светло-серый фон
-    "surface": "#ffffff",     # Белый
-    "text_primary": "#1e293b", # Темно-серый текст
-    "text_secondary": "#64748b", # Серый текст
-    "border": "#e2e8f0",      # Светло-серая граница
-    "shadow": "#00000010",    # Легкая тень
+    "surface": "#ffffff",  # Белый
+    "text_primary": "#1e293b",  # Темно-серый текст
+    "text_secondary": "#64748b",  # Серый текст
+    "border": "#e2e8f0",  # Светло-серая граница
+    "shadow": "#00000010",  # Легкая тень
 }
 
 
@@ -27,7 +25,7 @@ def setup_styles() -> None:
     """Настраивает современные стили для приложения"""
     style = ttk.Style()
     style.theme_use("clam")
-    
+
     # Основные стили для фреймов
     style.configure(
         "Card.TFrame",
@@ -35,13 +33,13 @@ def setup_styles() -> None:
         relief="flat",
         borderwidth=1,
     )
-    
+
     style.configure(
         "Main.TFrame",
         background=COLORS["background"],
         relief="flat",
     )
-    
+
     # Стили для заголовков
     style.configure(
         "Title.TLabel",
@@ -50,7 +48,7 @@ def setup_styles() -> None:
         background=COLORS["background"],
         anchor="center",
     )
-    
+
     style.configure(
         "Subtitle.TLabel",
         font=("SF Pro Display", 16),
@@ -58,7 +56,7 @@ def setup_styles() -> None:
         background=COLORS["background"],
         anchor="center",
     )
-    
+
     # Стили для упражнений
     style.configure(
         "Exercise.TLabel",
@@ -67,7 +65,7 @@ def setup_styles() -> None:
         background=COLORS["surface"],
         anchor="center",
     )
-    
+
     style.configure(
         "Result.TLabel",
         font=("SF Pro Display", 18),
@@ -75,7 +73,7 @@ def setup_styles() -> None:
         background=COLORS["surface"],
         anchor="center",
     )
-    
+
     # Стили для кнопок
     style.configure(
         "Primary.TButton",
@@ -87,12 +85,15 @@ def setup_styles() -> None:
         relief="flat",
         padding=(20, 12),
     )
-    
+
     style.map(
         "Primary.TButton",
-        background=[("active", COLORS["primary_hover"]), ("pressed", COLORS["primary_hover"])],
+        background=[
+            ("active", COLORS["primary_hover"]),
+            ("pressed", COLORS["primary_hover"]),
+        ],
     )
-    
+
     style.configure(
         "Success.TButton",
         font=("SF Pro Display", 14, "bold"),
@@ -103,7 +104,7 @@ def setup_styles() -> None:
         relief="flat",
         padding=(20, 12),
     )
-    
+
     style.configure(
         "Secondary.TButton",
         font=("SF Pro Display", 14),
@@ -114,7 +115,7 @@ def setup_styles() -> None:
         relief="flat",
         padding=(20, 12),
     )
-    
+
     # Стили для полей ввода
     style.configure(
         "Modern.TEntry",
@@ -126,13 +127,13 @@ def setup_styles() -> None:
         insertcolor=COLORS["primary"],
         padding=(16, 12),
     )
-    
+
     style.map(
         "Modern.TEntry",
         focuscolor=[("focus", COLORS["primary"])],
         bordercolor=[("focus", COLORS["primary"]), ("!focus", COLORS["border"])],
     )
-    
+
     # Стиль для поля ввода с ошибкой
     style.configure(
         "Error.TEntry",
@@ -144,13 +145,13 @@ def setup_styles() -> None:
         insertcolor=COLORS["primary"],
         padding=(16, 12),
     )
-    
+
     style.map(
         "Error.TEntry",
         focuscolor=[("focus", COLORS["error"])],
         bordercolor=[("focus", COLORS["error"]), ("!focus", COLORS["error"])],
     )
-    
+
     # Стили для статистики
     style.configure(
         "Stats.TLabel",
@@ -158,7 +159,7 @@ def setup_styles() -> None:
         foreground=COLORS["text_secondary"],
         background=COLORS["surface"],
     )
-    
+
     style.configure(
         "StatsValue.TLabel",
         font=("SF Pro Display", 20, "bold"),

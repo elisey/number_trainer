@@ -16,7 +16,6 @@ tasks:
     desc: "Установить все зависимости проекта"
     cmds:
       - "{{.UV_CMD}} sync"
-      - "{{.UV_CMD}} add --group test pytest pytest-cov"
     sources:
       - pyproject.toml
     generates:
@@ -25,8 +24,11 @@ tasks:
   install-dev:
     desc: "Установить зависимости для разработки"
     cmds:
-      - "{{.UV_CMD}} add --group dev black isort flake8 mypy"
-    deps: [install]
+      - "{{.UV_CMD}} sync --all-groups"
+    sources:
+      - pyproject.toml
+    generates:
+      - uv.lock
 
   # Запуск приложения
   run:
@@ -47,6 +49,7 @@ tasks:
   # Тестирование
   test:
     desc: "Запустить все тесты"
+    deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run pytest tests/ -v"
     sources:
@@ -55,6 +58,7 @@ tasks:
 
   test-cov:
     desc: "Запустить тесты с покрытием кода"
+    deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run pytest tests/ --cov=src/number_trainer --cov-report=term-missing --cov-report=html"
     sources:
@@ -65,6 +69,7 @@ tasks:
 
   test-watch:
     desc: "Запустить тесты в режиме наблюдения"
+    deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run pytest tests/ -v --tb=short -x"
     watch: true
@@ -75,12 +80,23 @@ tasks:
   # Качество кода
   lint:
     desc: "Проверить код линтерами"
+    cmds:
+      - task: ruff
+      - task: mypy
+
+  ruff:
+    desc: "Проверить код ruff"
     deps: [install-dev]
     cmds:
-      - "{{.UV_CMD}} run ruff check src/ tests/ main.py demo.py"
+      - "{{.UV_CMD}} run ruff check --fix src/ tests/ main.py demo.py"
+
+  mypy:
+    desc: "Проверить код mypy"
+    deps: [install-dev]
+    cmds:
       - "{{.UV_CMD}} run mypy --package number_trainer --ignore-missing-imports"
       - "{{.UV_CMD}} run mypy main.py demo.py --ignore-missing-imports"
-
+  
   format:
     desc: "Отформатировать код"
     deps: [install-dev]
@@ -106,13 +122,15 @@ tasks:
   clean:
     desc: "Очистить временные файлы"
     cmds:
-      - rm -rf __pycache__/
-      - rm -rf .pytest_cache/
-      - rm -rf htmlcov/
+      - rm -rf __pycache__
+      - rm -rf .pytest_cache
+      - rm -rf htmlcov
       - rm -rf .coverage
       - rm -rf *.pyc
-      - rm -rf .mypy_cache/
-      - rm -rf .ruff_cache/
+      - rm -rf .mypy_cache
+      - rm -rf .ruff_cache
+      - rm -rf .task
+      - rm -rf dist
 
   clean-all:
     desc: "Полная очистка включая виртуальное окружение"
@@ -131,77 +149,3 @@ tasks:
       - pyproject.toml
     generates:
       - dist/
-
-  # Разработка
-  dev:
-    desc: "Настроить среду разработки"
-    cmds:
-      - task: install-dev
-      - task: format
-      - task: test
-      - echo "✅ Среда разработки готова!"
-
-  # Информация о проекте
-  info:
-    desc: "Показать информацию о проекта"
-    cmds:
-      - echo "Проект{{":"}} {{.PROJECT_NAME}}"
-      - echo "Python{{":"}} $({{.PYTHON_CMD}} --version)"
-      - echo "UV{{":"}} $({{.UV_CMD}} --version)"
-      - echo "Структура проекта{{":"}}"
-      - find . -name "*.py" -o -name "*.toml" -o -name "*.yml" -o -name "*.md" | head -10
-
-  # Демонстрация
-  demo:
-    desc: "Запустить демонстрацию math_trainer"
-    cmds:
-      - echo "🧮 Демонстрация Number Trainer"
-      - echo "Запускаем несколько примеров..."
-      - "{{.UV_CMD}} run {{.PYTHON_CMD}} math_trainer.py"
-
-  # Проверка здоровья проекта
-  health:
-    desc: "Проверить здоровье проекта"
-    cmds:
-      - echo "🔍 Проверка здоровья проекта..."
-      - echo "📁 Файлы проекта{{":"}}"
-      - ls -la *.py *.toml *.md 2>/dev/null || echo "Некоторые файлы отсутствуют"
-      - echo "🧪 Проверка импортов{{":"}}"
-      - "{{.UV_CMD}} run {{.PYTHON_CMD}} -c \"import math_trainer; print('✅ math_trainer OK')\""
-      - "{{.UV_CMD}} run {{.PYTHON_CMD}} -c \"import tkinter; print('✅ tkinter OK')\""
-      - echo "✅ Проверка завершена"
-
-  # Помощь
-  help:
-    desc: "Показать подробную помощь"
-    cmds:
-      - echo "🚀 Number Trainer - Помощь по командам"
-      - echo ""
-      - echo "📦 УСТАНОВКА{{":"}}"
-      - echo "  task install     - Установить зависимости"
-      - echo "  task install-dev - Установить dev зависимости"
-      - echo "  task dev         - Настроить среду разработки"
-      - echo ""
-      - echo "🏃 ЗАПУСК{{":"}}"
-      - echo "  task run         - Запустить GUI приложение"
-      - echo "  task run-console - Запустить консольную версию"
-      - echo "  task demo        - Показать демонстрацию"
-      - echo ""
-      - echo "🧪 ТЕСТИРОВАНИЕ{{":"}}"
-      - echo "  task test        - Запустить тесты"
-      - echo "  task test-cov    - Тесты с покрытием"
-      - echo "  task test-watch  - Тесты в режиме наблюдения"
-      - echo ""
-      - echo "🔧 КАЧЕСТВО КОДА{{":"}}"
-      - echo "  task lint        - Проверить линтерами"
-      - echo "  task format      - Отформатировать код"
-      - echo "  task ci          - Все проверки CI"
-      - echo ""
-      - echo "🧹 ОЧИСТКА{{":"}}"
-      - echo "  task clean       - Очистить временные файлы"
-      - echo "  task clean-all   - Полная очистка"
-      - echo ""
-      - echo "ℹ️  ИНФОРМАЦИЯ{{":"}}"
-      - echo "  task info        - Информация о проекте"
-      - echo "  task health      - Проверка здоровья"
-      - echo "  task help        - Эта справка"
