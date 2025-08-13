@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   number-trainer-web:
-    build: .
+    image: ghcr.io/elisey/number_trainer:latest
     ports:
       - "8000:8000"
     environment:
@@ -32,7 +32,3 @@ services:
       - /tmp
       - /var/tmp
       - /home/appuser/.cache
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.number-trainer.rule=Host(`localhost`)"
-      - "traefik.http.services.number-trainer.loadbalancer.server.port=8000"
