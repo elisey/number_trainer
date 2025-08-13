@@ -18,7 +18,3 @@ services:
       retries: 3
       start_period: 40s
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.number-trainer.rule=Host(`localhost`)"
-      - "traefik.http.services.number-trainer.loadbalancer.server.port=8000"
