@@ -52,7 +52,36 @@ jobs:
           org.opencontainers.image.revision={{sha}}
           org.opencontainers.image.created={{timestamp}}
 
-    - name: Build and push Docker image
+    - name: Build Docker image
+      id: build
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false
+        tags: number-trainer:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Test the image
+      run: |
+        echo "Starting container for testing..."
+        docker run --rm -d -p 8000:8000 --name test-app number-trainer:latest
+        
+        echo "Waiting for application to start..."
+        sleep 10
+        
+        echo "Testing health endpoint..."
+        curl -f http://localhost:8000/api/health || {
+          echo "Health check failed!"
+          docker logs test-app
+          exit 1
+        }
+        
+        echo "Health check passed! Stopping container..."
+        docker stop test-app
+        echo "Test completed successfully!"
+
+    - name: Push Docker image
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -61,10 +90,3 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
-
-    - name: Test the image
-      run: |
-        docker run --rm -d -p 8000:8000 --name test-app ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.version.outputs.version }}
-        sleep 10
-        curl -f http://localhost:8000/api/health || exit 1
-        docker stop test-app

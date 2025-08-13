@@ -31,17 +31,30 @@ jobs:
         echo "Using version: $VERSION"
 
     - name: Build Docker image (test only)
+      id: build
       uses: docker/build-push-action@v5
       with:
         context: .
         push: false
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test-${{ github.sha }}
+        tags: number-trainer:test
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
     - name: Test the image
       run: |
-        docker run --rm -d -p 8000:8000 --name test-app ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test-${{ github.sha }}
+        echo "Starting container for testing..."
+        docker run --rm -d -p 8000:8000 --name test-app number-trainer:test
+        
+        echo "Waiting for application to start..."
         sleep 10
-        curl -f http://localhost:8000/api/health || exit 1
+        
+        echo "Testing health endpoint..."
+        curl -f http://localhost:8000/api/health || {
+          echo "Health check failed!"
+          docker logs test-app
+          exit 1
+        }
+        
+        echo "Health check passed! Stopping container..."
         docker stop test-app
+        echo "Test completed successfully!"
