@@ -48,10 +48,10 @@ def test_answer_request_without_time():
 
 def test_answer_response():
     """Test answer response model."""
-    response = AnswerResponse(correct=True, correct_answer=5, message="Правильно!", time_taken=2.5)
+    response = AnswerResponse(correct=True, correct_answer=5, message="Correct!", time_taken=2.5)
     assert response.correct is True
     assert response.correct_answer == 5
-    assert response.message == "Правильно!"
+    assert response.message == "Correct!"
     assert response.time_taken == 2.5
 
 

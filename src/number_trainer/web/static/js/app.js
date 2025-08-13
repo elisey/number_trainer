@@ -89,7 +89,7 @@ class NumberTrainerApp {
             this.showScreen('exercise-screen');
         } catch (error) {
             console.error('Error generating exercise:', error);
-            alert('Ошибка при создании упражнения. Попробуйте снова.');
+            alert('Error creating exercise. Please try again.');
         }
     }
 
@@ -100,7 +100,7 @@ class NumberTrainerApp {
         const answer = parseInt(answerInput.value);
 
         if (isNaN(answer)) {
-            alert('Пожалуйста, введите число');
+            alert('Please enter a number');
             answerInput.focus();
             return;
         }
@@ -129,7 +129,7 @@ class NumberTrainerApp {
             await this.updateStats();
         } catch (error) {
             console.error('Error checking answer:', error);
-            alert('Ошибка при проверке ответа. Попробуйте снова.');
+            alert('Error checking answer. Please try again.');
         }
     }
 
@@ -142,7 +142,7 @@ class NumberTrainerApp {
 
         let details = '';
         if (result.time_taken) {
-            details += `Время: ${result.time_taken.toFixed(1)} сек`;
+            details += `Time: ${result.time_taken.toFixed(1)} sec`;
         }
         detailsEl.textContent = details;
 

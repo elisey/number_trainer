@@ -7,13 +7,13 @@ vars:
 
 tasks:
   default:
-    desc: "Показать доступные команды"
+    desc: "Show available commands"
     cmds:
       - task --list
 
-  # Установка и настройка
+  # Installation and setup
   install:
-    desc: "Установить все зависимости проекта"
+    desc: "Install all project dependencies"
     cmds:
       - "{{.UV_CMD}} sync"
     sources:
@@ -22,7 +22,7 @@ tasks:
       - uv.lock
 
   install-dev:
-    desc: "Установить зависимости для разработки"
+    desc: "Install development dependencies"
     cmds:
       - "{{.UV_CMD}} sync --all-groups"
     sources:
@@ -31,30 +31,30 @@ tasks:
       - uv.lock
 
   install-hooks:
-    desc: "Установить pre-commit хуки"
+    desc: "Install pre-commit hooks"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run pre-commit install"
 
-  # Запуск приложения
+  # Application launch
   run:
-    desc: "Запустить GUI приложение"
+    desc: "Launch GUI application"
     cmds:
       - "{{.UV_CMD}} run {{.PYTHON_CMD}} main.py"
 
   run-console:
-    desc: "Запустить консольную версию тренажера"
+    desc: "Launch console version of trainer"
     cmds:
       - "{{.UV_CMD}} run {{.PYTHON_CMD}} -m src.number_trainer.cli.console"
 
   run-web:
-    desc: "Запустить веб-сервер (браузерная версия)"
+    desc: "Launch web server (browser version)"
     cmds:
       - "{{.UV_CMD}} run {{.PYTHON_CMD}} web_main.py"
 
-  # Тестирование
+  # Testing
   test:
-    desc: "Запустить все тесты"
+    desc: "Run all tests"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run pytest tests/ -v"
@@ -63,7 +63,7 @@ tasks:
       - "tests/**/*.py"
 
   test-cov:
-    desc: "Запустить тесты с покрытием кода"
+    desc: "Run tests with code coverage"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run pytest tests/ --cov=src/number_trainer --cov-report=term-missing --cov-report=html"
@@ -74,7 +74,7 @@ tasks:
       - htmlcov/
 
   test-watch:
-    desc: "Запустить тесты в режиме наблюдения"
+    desc: "Run tests in watch mode"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run pytest tests/ -v --tb=short -x"
@@ -83,57 +83,57 @@ tasks:
       - "src/**/*.py"
       - "tests/**/*.py"
 
-  # Качество кода
+  # Code quality
   lint:
-    desc: "Проверить код линтерами"
+    desc: "Check code with linters"
     cmds:
       - task: ruff
       - task: mypy
 
   ruff:
-    desc: "Проверить код ruff"
+    desc: "Check code with ruff"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run ruff check --fix src/ tests/ main.py web_main.py "
 
   mypy:
-    desc: "Проверить код mypy"
+    desc: "Check code with mypy"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run mypy --package number_trainer --ignore-missing-imports"
       - "{{.UV_CMD}} run mypy main.py web_main.py --ignore-missing-imports"
 
   format:
-    desc: "Отформатировать код"
+    desc: "Format code"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run ruff format src/ tests/ main.py web_main.py"
       - "{{.UV_CMD}} run ruff check --fix src/ tests/ main.py web_main.py"
 
   format-check:
-    desc: "Проверить форматирование кода"
+    desc: "Check code formatting"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run ruff format --check src/ tests/ main.py web_main.py"
       - "{{.UV_CMD}} run ruff check src/ tests/ main.py web_main.py"
 
-  # CI/CD команды
+  # CI/CD commands
   ci:
-    desc: "Запустить все проверки как в CI"
+    desc: "Run all checks as in CI"
     cmds:
       - task: format-check
       - task: lint
       - task: test-cov
 
   pre-commit:
-    desc: "Запустить pre-commit на всех файлах"
+    desc: "Run pre-commit on all files"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run pre-commit run --all-files"
 
-  # Очистка
+  # Cleanup
   clean:
-    desc: "Очистить временные файлы"
+    desc: "Clean temporary files"
     cmds:
       - rm -rf __pycache__
       - rm -rf .pytest_cache
@@ -147,15 +147,15 @@ tasks:
       - rm -rf .pre-commit
 
   clean-all:
-    desc: "Полная очистка включая виртуальное окружение"
+    desc: "Full cleanup including virtual environment"
     cmds:
       - task: clean
       - rm -rf .venv/
       - rm -f uv.lock
 
-  # Сборка и развертывание
+  # Build and deployment
   build:
-    desc: "Собрать проект"
+    desc: "Build project"
     cmds:
       - "{{.UV_CMD}} build"
     sources:
@@ -166,7 +166,7 @@ tasks:
 
   # Docker commands
   docker-build:
-    desc: "Собрать Docker образ"
+    desc: "Build Docker image"
     cmds:
       - docker build -t {{.PROJECT_NAME}}:latest .
     sources:
@@ -175,17 +175,17 @@ tasks:
       - "src/**/*.py"
 
   docker-run:
-    desc: "Запустить Docker контейнер"
+    desc: "Run Docker container"
     cmds:
       - docker run -p 8000:8000 {{.PROJECT_NAME}}:latest
 
   docker-stop:
-    desc: "Остановить все контейнеры приложения"
+    desc: "Stop all application containers"
     cmds:
       - docker stop $$(docker ps -q --filter ancestor={{.PROJECT_NAME}}:latest) 2>/dev/null || true
 
   docker-clean:
-    desc: "Очистить Docker образы и контейнеры"
+    desc: "Clean Docker images and containers"
     cmds:
       - docker stop $$(docker ps -q --filter ancestor={{.PROJECT_NAME}}:latest) 2>/dev/null || true
       - docker rm $$(docker ps -aq --filter ancestor={{.PROJECT_NAME}}:latest) 2>/dev/null || true
@@ -193,7 +193,7 @@ tasks:
 
   # GitHub Container Registry
   docker-build-ghcr:
-    desc: "Собрать Docker образ для GitHub Container Registry"
+    desc: "Build Docker image for GitHub Container Registry"
     cmds:
       - docker build -t ghcr.io/{{.GITHUB_USERNAME}}/{{.PROJECT_NAME}}:latest .
       - docker tag ghcr.io/{{.GITHUB_USERNAME}}/{{.PROJECT_NAME}}:latest ghcr.io/{{.GITHUB_USERNAME}}/{{.PROJECT_NAME}}:{{.VERSION}}
@@ -206,7 +206,7 @@ tasks:
       - "src/**/*.py"
 
   docker-push-ghcr:
-    desc: "Опубликовать Docker образ в GitHub Container Registry"
+    desc: "Publish Docker image to GitHub Container Registry"
     cmds:
       - echo "Logging in to GitHub Container Registry..."
       - echo "{{.GITHUB_TOKEN}}" | docker login ghcr.io -u {{.GITHUB_USERNAME}} --password-stdin
@@ -220,7 +220,7 @@ tasks:
     silent: true
 
   docker-publish:
-    desc: "Собрать и опубликовать Docker образ в GitHub Container Registry"
+    desc: "Build and publish Docker image to GitHub Container Registry"
     cmds:
       - task: docker-build-ghcr
       - task: docker-push-ghcr
@@ -230,42 +230,42 @@ tasks:
 
   # Docker Compose commands
   docker-compose-up:
-    desc: "Запустить приложение через Docker Compose"
+    desc: "Launch application via Docker Compose"
     cmds:
       - docker-compose up -d
 
   docker-compose-down:
-    desc: "Остановить приложение через Docker Compose"
+    desc: "Stop application via Docker Compose"
     cmds:
       - docker-compose down
 
   docker-compose-logs:
-    desc: "Показать логи Docker Compose"
+    desc: "Show Docker Compose logs"
     cmds:
       - docker-compose logs -f
 
   docker-compose-build:
-    desc: "Пересобрать образ через Docker Compose"
+    desc: "Rebuild image via Docker Compose"
     cmds:
       - docker-compose build --no-cache
 
   # Production Docker commands
   docker-compose-prod:
-    desc: "Запустить приложение в production режиме"
+    desc: "Launch application in production mode"
     cmds:
       - docker-compose -f docker-compose.prod.yml up -d
 
   docker-compose-prod-down:
-    desc: "Остановить production приложение"
+    desc: "Stop production application"
     cmds:
       - docker-compose -f docker-compose.prod.yml down
 
   docker-compose-prod-logs:
-    desc: "Показать логи production приложения"
+    desc: "Show production application logs"
     cmds:
       - docker-compose -f docker-compose.prod.yml logs -f
 
   docker-compose-prod-build:
-    desc: "Пересобрать production образ"
+    desc: "Rebuild production image"
     cmds:
       - docker-compose -f docker-compose.prod.yml build --no-cache

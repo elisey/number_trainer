@@ -1,7 +1,7 @@
 """
-Современный GUI интерфейс для математического тренажера.
+Modern GUI interface for mathematical trainer.
 
-Минималистичный дизайн с интуитивным интерфейсом и красивой анимацией.
+Minimalist design with intuitive interface and beautiful animations.
 """
 
 import time
@@ -16,7 +16,7 @@ from .styles import get_colors, setup_styles
 
 
 class AppState(Enum):
-    """Состояния приложения"""
+    """Application states"""
 
     WELCOME = "welcome"
     EXERCISE = "exercise"
@@ -24,7 +24,7 @@ class AppState(Enum):
 
 
 class NumberTrainerApp:
-    """Современный GUI класс для математического тренажера"""
+    """Modern GUI class for mathematical trainer"""
 
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
@@ -38,30 +38,30 @@ class NumberTrainerApp:
         self.current_state = AppState.WELCOME
         self.colors = get_colors()
 
-        # Настройка окна
+        # Window setup
         self.setup_window()
 
-        # Настройка стилей
+        # Style setup
         setup_styles()
 
-        # Создание интерфейса
+        # Interface creation
         self.create_main_interface()
 
-        # Привязка горячих клавиш
+        # Keyboard shortcuts binding
         self.bind_keyboard_shortcuts()
 
     def setup_window(self) -> None:
-        """Настройка основного окна приложения"""
+        """Setup main application window"""
         self.root.title("Number Trainer")
         self.root.geometry("900x700")
         self.root.minsize(600, 500)
         self.root.configure(bg=self.colors["background"])
 
-        # Центрирование окна
+        # Center window
         self.center_window()
 
     def center_window(self) -> None:
-        """Центрирует окно на экране"""
+        """Centers window on screen"""
         self.root.update_idletasks()
         width = self.root.winfo_width()
         height = self.root.winfo_height()
@@ -70,127 +70,127 @@ class NumberTrainerApp:
         self.root.geometry(f"{width}x{height}+{x}+{y}")
 
     def create_main_interface(self) -> None:
-        """Создает основной интерфейс приложения"""
-        # Основной контейнер
+        """Creates main application interface"""
+        # Main container
         main_container = ttk.Frame(self.root, style="Main.TFrame")
         main_container.pack(fill=tk.BOTH, expand=True, padx=40, pady=40)
 
-        # Заголовок
+        # Header
         self.create_header(main_container)
 
-        # Основная область контента
+        # Main content area
         self.create_content_area(main_container)
 
-        # Панель статистики
+        # Statistics panel
         self.create_stats_panel(main_container)
 
-        # Показать стартовый экран
+        # Show welcome screen
         self.show_welcome_screen()
 
     def create_header(self, parent: tk.Widget) -> None:
-        """Создает заголовок приложения"""
+        """Creates application header"""
         header_frame = ttk.Frame(parent, style="Main.TFrame")
         header_frame.pack(fill=tk.X, pady=(0, 30))
 
-        # Заголовок
+        # Title
         title_label = ttk.Label(header_frame, text="Number Trainer", style="Title.TLabel")
         title_label.pack()
 
-        # Подзаголовок
-        subtitle_label = ttk.Label(header_frame, text="Тренажер устного счета", style="Subtitle.TLabel")
+        # Subtitle
+        subtitle_label = ttk.Label(header_frame, text="Mental Math Trainer", style="Subtitle.TLabel")
         subtitle_label.pack(pady=(5, 0))
 
     def create_content_area(self, parent: tk.Widget) -> None:
-        """Создает основную область контента"""
-        # Карточка с контентом
+        """Creates main content area"""
+        # Content card
         self.content_card = ttk.Frame(parent, style="Card.TFrame")
         self.content_card.pack(fill=tk.BOTH, expand=True, pady=(0, 20))
 
-        # Внутренний контейнер с отступами
+        # Inner container with padding
         self.content_container = ttk.Frame(self.content_card, style="Card.TFrame")
         self.content_container.pack(fill=tk.BOTH, expand=True, padx=40, pady=40)
 
     def create_stats_panel(self, parent: tk.Widget) -> None:
-        """Создает панель статистики"""
+        """Creates statistics panel"""
         stats_frame = ttk.Frame(parent, style="Card.TFrame")
         stats_frame.pack(fill=tk.X, pady=(10, 0))
 
-        # Внутренний контейнер статистики
+        # Inner statistics container
         stats_container = ttk.Frame(stats_frame, style="Card.TFrame")
         stats_container.pack(fill=tk.X, padx=30, pady=20)
 
-        # Создание колонок статистики
-        self.create_stat_column(stats_container, "Всего", "total_exercises", 0)
-        self.create_stat_column(stats_container, "Правильно", "correct_answers", 1)
-        self.create_stat_column(stats_container, "Неправильно", "incorrect_answers", 2)
+        # Create statistics columns
+        self.create_stat_column(stats_container, "Total", "total_exercises", 0)
+        self.create_stat_column(stats_container, "Correct", "correct_answers", 1)
+        self.create_stat_column(stats_container, "Incorrect", "incorrect_answers", 2)
         self.create_accuracy_column(stats_container, 3)
 
-        # Настройка сетки
+        # Grid setup
         for i in range(4):
             stats_container.columnconfigure(i, weight=1)
 
     def create_stat_column(self, parent: tk.Widget, title: str, stat_key: str, column: int) -> None:
-        """Создает колонку статистики"""
+        """Creates statistics column"""
         col_frame = ttk.Frame(parent, style="Card.TFrame")
         col_frame.grid(row=0, column=column, padx=20, sticky="ew")
 
-        # Значение
+        # Value
         value_label = ttk.Label(col_frame, text="0", style="StatsValue.TLabel")
         value_label.pack()
         setattr(self, f"{stat_key}_label", value_label)
 
-        # Заголовок
+        # Title
         title_label = ttk.Label(col_frame, text=title, style="Stats.TLabel")
         title_label.pack()
 
     def create_accuracy_column(self, parent: tk.Widget, column: int) -> None:
-        """Создает колонку точности"""
+        """Creates accuracy column"""
         col_frame = ttk.Frame(parent, style="Card.TFrame")
         col_frame.grid(row=0, column=column, padx=20, sticky="ew")
 
-        # Значение точности
+        # Accuracy value
         self.accuracy_label = ttk.Label(col_frame, text="0%", style="StatsValue.TLabel")
         self.accuracy_label.pack()
 
-        # Заголовок
-        title_label = ttk.Label(col_frame, text="Точность", style="Stats.TLabel")
+        # Title
+        title_label = ttk.Label(col_frame, text="Accuracy", style="Stats.TLabel")
         title_label.pack()
 
     def show_welcome_screen(self) -> None:
-        """Показывает экран приветствия"""
+        """Shows welcome screen"""
         self.current_state = AppState.WELCOME
         self.clear_content()
 
-        # Приветственное сообщение
+        # Welcome message
         welcome_label = ttk.Label(
             self.content_container,
-            text="Добро пожаловать в Number Trainer!",
+            text="Welcome to Number Trainer!",
             style="Exercise.TLabel",
         )
         welcome_label.pack(pady=(50, 20))
 
-        # Описание
+        # Description
         desc_label = ttk.Label(
             self.content_container,
-            text="Тренируйте навыки устного счета\nс упражнениями разной сложности",
+            text="Train your mental math skills\nwith exercises of varying difficulty",
             style="Result.TLabel",
         )
         desc_label.pack(pady=(0, 40))
 
-        # Кнопки настройки сложности
+        # Difficulty selection buttons
         difficulty_frame = ttk.Frame(self.content_container, style="Card.TFrame")
         difficulty_frame.pack(pady=20)
 
-        ttk.Label(difficulty_frame, text="Выберите сложность:", style="Result.TLabel").pack(pady=(0, 15))
+        ttk.Label(difficulty_frame, text="Select difficulty:", style="Result.TLabel").pack(pady=(0, 15))
 
         button_frame = ttk.Frame(difficulty_frame, style="Card.TFrame")
         button_frame.pack()
 
-        # Кнопки сложности
+        # Difficulty buttons
         difficulties = [
-            ("Легко (1 цифра)", 1, 1),
-            ("Средне (1-2 цифры)", 1, 2),
-            ("Сложно (2-3 цифры)", 2, 3),
+            ("Easy (1 digit)", 1, 1),
+            ("Medium (1-2 digits)", 1, 2),
+            ("Hard (2-3 digits)", 2, 3),
         ]
 
         for text, min_digits, max_digits in difficulties:
@@ -203,22 +203,22 @@ class NumberTrainerApp:
             btn.pack(side=tk.LEFT, padx=10)
 
     def start_training(self, min_digits: int = 1, max_digits: int = 2) -> None:
-        """Начинает тренировку с заданной сложностью"""
+        """Starts training with specified difficulty"""
         self.trainer = MathTrainer(min_digits, max_digits)
         self.show_exercise()
 
     def show_exercise(self) -> None:
-        """Показывает новое упражнение"""
+        """Shows new exercise"""
         self.current_state = AppState.EXERCISE
         self.clear_content()
 
-        # Генерируем упражнение
+        # Generate exercise
         self.current_exercise = self.trainer.generate_exercise()
 
-        # Запоминаем время начала упражнения
+        # Remember exercise start time
         self.exercise_start_time = time.time()
 
-        # Отображение упражнения
+        # Display exercise
         exercise_label = ttk.Label(
             self.content_container,
             text=(
@@ -229,7 +229,7 @@ class NumberTrainerApp:
         )
         exercise_label.pack(pady=(80, 40))
 
-        # Поле ввода ответа
+        # Answer input field
         self.answer_var = tk.StringVar()
         self.answer_entry = ttk.Entry(
             self.content_container,
@@ -242,13 +242,13 @@ class NumberTrainerApp:
         self.answer_entry.pack(pady=20)
         self.answer_entry.focus()
 
-        # Кнопки действий
+        # Action buttons
         button_frame = ttk.Frame(self.content_container, style="Card.TFrame")
         button_frame.pack(pady=30)
 
         check_btn = ttk.Button(
             button_frame,
-            text="Проверить",
+            text="Check",
             style="Primary.TButton",
             command=self.check_answer,
         )
@@ -256,7 +256,7 @@ class NumberTrainerApp:
 
         skip_btn = ttk.Button(
             button_frame,
-            text="Пропустить",
+            text="Skip",
             style="Secondary.TButton",
             command=self.skip_exercise,
         )
@@ -264,81 +264,81 @@ class NumberTrainerApp:
 
         new_btn = ttk.Button(
             button_frame,
-            text="Новая игра",
+            text="New Game",
             style="Secondary.TButton",
             command=self.show_welcome_screen,
         )
         new_btn.pack(side=tk.LEFT)
 
     def check_answer(self) -> None:
-        """Проверяет ответ пользователя"""
+        """Checks user answer"""
         if not self.current_exercise:
             return
 
         try:
             user_answer = int(self.answer_var.get().strip())
         except ValueError:
-            self.show_error_message("Пожалуйста, введите число")
+            self.show_error_message("Please enter a number")
             return
 
-        # Вычисляем время выполнения
+        # Calculate execution time
         time_taken = time.time() - self.exercise_start_time
 
-        # Проверяем ответ
+        # Check answer
         result = self.trainer.check_answer(self.current_exercise, user_answer, time_taken)
         self.show_result(result)
 
-        # Обновляем статистику
+        # Update statistics
         self.update_stats()
 
     def skip_exercise(self) -> None:
-        """Пропускает текущее упражнение"""
+        """Skips current exercise"""
         if self.current_exercise:
-            # Вычисляем время выполнения
+            # Calculate execution time
             time_taken = time.time() - self.exercise_start_time
 
-            # Считаем пропуск как неправильный ответ
+            # Count skip as incorrect answer
             result = self.trainer.check_answer(self.current_exercise, -999999, time_taken)
             self.show_result(result, skipped=True)
             self.update_stats()
 
     def show_result(self, result: Result, skipped: bool = False) -> None:
-        """Показывает результат проверки ответа"""
+        """Shows answer check result"""
         self.current_state = AppState.RESULT
         self.clear_content()
 
         if skipped:
-            status_text = "Упражнение пропущено"
+            status_text = "Exercise skipped"
         elif result.is_correct:
-            status_text = "Правильно! 🎉"
+            status_text = "Correct! 🎉"
         else:
-            status_text = "Неправильно 😔"
+            status_text = "Incorrect 😔"
 
-        # Статус
+        # Status
         status_label = ttk.Label(self.content_container, text=status_text, style="Exercise.TLabel")
         status_label.pack(pady=(60, 20))
 
-        # Правильный ответ
+        # Correct answer
         if not result.is_correct:
             correct_label = ttk.Label(
                 self.content_container,
-                text=f"Правильный ответ: {result.correct_answer}",
+                text=f"Correct answer: {result.correct_answer}",
                 style="Result.TLabel",
             )
             correct_label.pack(pady=10)
 
-        # Время решения
+        # Solution time
         time_label = ttk.Label(
             self.content_container,
-            text=f"Время: {result.time_taken:.1f} сек",
+            text=f"Time: {result.time_taken:.1f} sec",
             style="Result.TLabel",
         )
         time_label.pack(pady=5)
 
-        # Кнопка продолжения
+        # Continue button
         continue_btn = ttk.Button(
             self.content_container,
-            text="Следующее упражнение",
+            text="Next Exercise",
             style="Success.TButton",
             command=self.show_exercise,
         )
@@ -346,20 +346,20 @@ class NumberTrainerApp:
         continue_btn.focus()
 
     def show_error_message(self, message: str) -> None:
-        """Показывает сообщение об ошибке"""
-        # Можно добавить всплывающее уведомление
+        """Shows error message"""
+        # Can add popup notification
         self.answer_entry.configure(style="Error.TEntry")
         self.root.after(1000, lambda: self.answer_entry.configure(style="Modern.TEntry"))
 
     def update_stats(self) -> None:
-        """Обновляет отображение статистики"""
+        """Updates statistics display"""
         stats = self.trainer.get_stats()
 
         self.total_exercises_label.config(text=str(stats["total_exercises"]))
         self.correct_answers_label.config(text=str(stats["correct_answers"]))
         self.incorrect_answers_label.config(text=str(stats["incorrect_answers"]))
 
-        # Вычисляем точность
+        # Calculate accuracy
         if stats["total_exercises"] > 0:
             accuracy = (stats["correct_answers"] / stats["total_exercises"]) * 100
             self.accuracy_label.config(text=f"{accuracy:.0f}%")
@@ -367,33 +367,33 @@ class NumberTrainerApp:
             self.accuracy_label.config(text="0%")
 
     def clear_content(self) -> None:
-        """Очищает область контента"""
+        """Clears content area"""
         for widget in self.content_container.winfo_children():
             widget.destroy()
 
     def bind_keyboard_shortcuts(self) -> None:
-        """Привязывает горячие клавиши"""
+        """Binds keyboard shortcuts"""
         self.root.bind("<Return>", lambda e: self.handle_enter_key())
         self.root.bind("<Escape>", lambda e: self.handle_exit_key())
         self.root.bind("<Control-n>", lambda e: self.show_exercise())
 
     def handle_enter_key(self) -> None:
-        """Обрабатывает нажатие клавиши Enter в зависимости от текущего состояния"""
+        """Handles Enter key press depending on current state"""
         if self.current_state == AppState.EXERCISE:
             self.check_answer()
         elif self.current_state == AppState.RESULT:
             self.show_exercise()
 
     def handle_exit_key(self) -> None:
-        """Обрабатывает нажатие клавиши Escape в зависимости от текущего состояния"""
+        """Handles Escape key press depending on current state"""
         if self.current_state == AppState.WELCOME:
-            # На экране приветствия - выход из программы
+            # On welcome screen - exit program
             self.exit_application()
         else:
-            # Во время упражнения или результата - возврат на экран приветствия
+            # During exercise or result - return to welcome screen
             self.show_welcome_screen()
 
     def exit_application(self) -> None:
-        """Закрывает приложение"""
+        """Closes application"""
         self.root.quit()
         self.root.destroy()

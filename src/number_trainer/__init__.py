@@ -1,10 +1,11 @@
 """
-Number Trainer - Математический тренажер для изучения арифметики.
+Number Trainer - Mathematical trainer for learning arithmetic.
 
-Основные компоненты:
-- core: бизнес-логика и модели данных
-- gui: графический интерфейс на tkinter
-- cli: консольный интерфейс
+Main components:
+- core: business logic and data models
+- gui: graphical interface on tkinter
+- cli: console interface
+- web: web interface with FastAPI
 """
 
 __version__ = "0.1.0"

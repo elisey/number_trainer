@@ -1,5 +1,5 @@
 repos:
-  # Локальный репозиторий для запуска task ci
+  # Local repository for running task ci
   - repo: local
     hooks:
       - id: task-ci
@@ -8,9 +8,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
-        description: "Запуск всех проверок качества кода через task ci"
+        description: "Run all code quality checks via task ci"
 
-  # Дополнительные хуки для улучшения качества кода
+  # Additional hooks for improving code quality
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
