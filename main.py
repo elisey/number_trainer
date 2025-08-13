@@ -1,8 +1,4 @@
-"""
-Точка входа для Number Trainer приложения.
-
-Запускает GUI версию математического тренажера.
-"""
+# Entry point for Number Trainer application.
 
 import tkinter as tk
 

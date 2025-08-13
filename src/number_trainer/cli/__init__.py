@@ -1,8 +1,8 @@
 """
-CLI модуль - консольный интерфейс для математического тренажера.
+CLI module - console interface for mathematical trainer.
 
-Компоненты:
-- console: консольная версия приложения
+Components:
+- console: console version of the application
 """
 
 from .console import run_console_trainer

@@ -1,10 +1,10 @@
 """
-Модели данных для математического тренажера.
+Data models for mathematical trainer.
 
-Содержит основные структуры данных:
-- Operation: перечисление математических операций
-- Exercise: модель математического упражнения
-- Result: модель результата проверки ответа
+Contains main data structures:
+- Operation: enumeration of mathematical operations
+- Exercise: exercise data structure
+- Result: result data structure
 """
 
 from dataclasses import dataclass
@@ -12,7 +12,7 @@ from enum import Enum
 
 
 class Operation(Enum):
-    """Математические операции"""
+    """Mathematical operations"""
 
     ADDITION = "+"
     SUBTRACTION = "-"
@@ -20,7 +20,7 @@ class Operation(Enum):
 
 @dataclass
 class Exercise:
-    """Математическое упражнение"""
+    """Mathematical exercise"""
 
     first_number: int
     second_number: int
@@ -33,7 +33,7 @@ class Exercise:
 
 @dataclass
 class Result:
-    """Результат проверки ответа"""
+    """Answer check result"""
 
     is_correct: bool
     user_answer: int

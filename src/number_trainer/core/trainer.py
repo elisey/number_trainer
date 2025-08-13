@@ -1,8 +1,7 @@
 """
-Основной класс математического тренажера.
+Main class of mathematical trainer.
 
-Содержит логику генерации упражнений, проверки ответов и ведения статистики.
-Полностью независим от GUI - работает только с данными.
+Contains logic for generating exercises, checking answers, and maintaining statistics.
 """
 
 import random
@@ -13,17 +12,17 @@ from .models import Exercise, Operation, Result
 
 class MathTrainer:
     """
-    Класс для генерации математических упражнений и проверки ответов.
-    Полностью независим от GUI - работает только с данными.
+    Class for generating mathematical exercises and checking answers.
+    Completely independent of GUI - works only with data.
     """
 
     def __init__(self, min_digits: int = 1, max_digits: int = 3):
         """
-        Инициализация тренажера
+        Trainer initialization
 
         Args:
-            min_digits: Минимальное количество цифр в числах (1-3)
-            max_digits: Максимальное количество цифр в числах (1-3)
+            min_digits: Minimum number of digits in numbers (1-3)
+            max_digits: Maximum number of digits in numbers (1-3)
         """
         self.min_digits = max(1, min(min_digits, 3))
         self.max_digits = max(1, min(max_digits, 3))
@@ -40,13 +39,13 @@ class MathTrainer:
 
     def _generate_number(self, digits: int) -> int:
         """
-        Генерирует случайное число с заданным количеством цифр
+        Generates a random number with specified number of digits
 
         Args:
-            digits: Количество цифр (1-3)
+            digits: Number of digits (1-3)
 
         Returns:
-            Случайное число
+            Random number
         """
         if digits == 1:
             return random.randint(1, 9)
@@ -55,31 +54,31 @@ class MathTrainer:
         elif digits == 3:
             return random.randint(100, 999)
         else:
-            raise ValueError("Количество цифр должно быть от 1 до 3")
+            raise ValueError("Number of digits must be from 1 to 3")
 
     def generate_exercise(self) -> Exercise:
         """
-        Генерирует новое математическое упражнение
+        Generates a new mathematical exercise
 
         Returns:
-            Объект Exercise с новым упражнением
+            Exercise object with new exercise
         """
-        # Случайное количество цифр для чисел
+        # Random number of digits for numbers
         digits1 = random.randint(self.min_digits, self.max_digits)
         digits2 = random.randint(self.min_digits, self.max_digits)
 
-        # Генерируем числа
+        # Generate numbers
         first_number = self._generate_number(digits1)
         second_number = self._generate_number(digits2)
 
-        # Случайная операция
+        # Random operation
         operation = random.choice(list(Operation))
 
-        # Для вычитания убеждаемся, что результат положительный
+        # For subtraction, ensure result is positive
         if operation == Operation.SUBTRACTION and first_number < second_number:
             first_number, second_number = second_number, first_number
 
-        # Вычисляем правильный ответ
+        # Calculate correct answer
         if operation == Operation.ADDITION:
             correct_answer = first_number + second_number
         else:  # SUBTRACTION
@@ -96,26 +95,26 @@ class MathTrainer:
 
     def check_answer(self, exercise: Exercise, user_answer: int, time_taken: float = 0.0) -> Result:
         """
-        Проверяет ответ пользователя
+        Checks user answer
 
         Args:
-            exercise: Упражнение для проверки
-            user_answer: Ответ пользователя
-            time_taken: Время выполнения в секундах
+            exercise: Exercise to check
+            user_answer: User answer
+            time_taken: Execution time in seconds
 
         Returns:
-            Объект Result с результатом проверки
+            Result object with check result
         """
         is_correct = user_answer == exercise.correct_answer
 
-        # Обновляем статистику
+        # Update statistics
         self.stats["total_exercises"] += 1
         if is_correct:
             self.stats["correct_answers"] += 1
-            message = "Правильно! Отличная работа!"
+            message = "Correct! Great job!"
         else:
             self.stats["incorrect_answers"] += 1
-            message = f"Неправильно. Правильный ответ: {exercise.correct_answer}"
+            message = f"Incorrect. Correct answer: {exercise.correct_answer}"
 
         return Result(
             is_correct=is_correct,
@@ -127,21 +126,21 @@ class MathTrainer:
 
     def get_current_exercise_text(self) -> str:
         """
-        Возвращает текстовое представление текущего упражнения
+        Returns text representation of current exercise
 
         Returns:
-            Строка с упражнением или сообщение об отсутствии упражнения
+            String with exercise or message about no active exercise
         """
         if self.current_exercise is None:
-            return "Нет активного упражнения"
+            return "No active exercise"
         return str(self.current_exercise)
 
     def get_stats(self) -> Dict[str, Union[int, float]]:
         """
-        Возвращает статистику тренировок
+        Returns training statistics
 
         Returns:
-            Словарь со статистикой
+            Dictionary with statistics
         """
         stats: Dict[str, Union[int, float]] = cast(Dict[str, Union[int, float]], self.stats.copy())
         if stats["total_exercises"] > 0:
@@ -151,7 +150,7 @@ class MathTrainer:
         return stats
 
     def reset_stats(self) -> None:
-        """Сбрасывает статистику тренировок"""
+        """Resets training statistics"""
         self.stats = {
             "total_exercises": 0,
             "correct_answers": 0,
@@ -160,11 +159,11 @@ class MathTrainer:
 
     def set_difficulty(self, min_digits: int, max_digits: int) -> None:
         """
-        Устанавливает сложность упражнений
+        Sets exercise difficulty
 
         Args:
-            min_digits: Минимальное количество цифр (1-3)
-            max_digits: Максимальное количество цифр (1-3)
+            min_digits: Minimum number of digits (1-3)
+            max_digits: Maximum number of digits (1-3)
         """
         self.min_digits = max(1, min(min_digits, 3))
         self.max_digits = max(1, min(max_digits, 3))

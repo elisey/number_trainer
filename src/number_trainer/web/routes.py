@@ -126,19 +126,19 @@ async def read_root() -> str:
                 <h1>Number Trainer</h1>
                 <div id="welcome-screen" class="screen">
                     <div class="card">
-                        <h2>Выберите сложность</h2>
+                        <h2>Select Difficulty</h2>
                         <div class="difficulty-buttons">
                             <button class="btn btn-primary" onclick="startTraining(1)">
-                                1 цифра
-                                <div class="btn-subtitle">Числа 1-9</div>
+                                1 digit
+                                <div class="btn-subtitle">Numbers 1-9</div>
                             </button>
                             <button class="btn btn-primary" onclick="startTraining(2)">
-                                2 цифры
-                                <div class="btn-subtitle">Числа 10-99</div>
+                                2 digits
+                                <div class="btn-subtitle">Numbers 10-99</div>
                             </button>
                             <button class="btn btn-primary" onclick="startTraining(3)">
-                                3 цифры
-                                <div class="btn-subtitle">Числа 100-999</div>
+                                3 digits
+                                <div class="btn-subtitle">Numbers 100-999</div>
                             </button>
                         </div>
                     </div>
@@ -147,10 +147,10 @@ async def read_root() -> str:
                 <div id="exercise-screen" class="screen hidden">
                     <div class="card">
                         <div id="question" class="question"></div>
-                        <input type="number" id="answer-input" placeholder="Введите ответ" autofocus>
+                        <input type="number" id="answer-input" placeholder="Enter answer" autofocus>
                         <div class="button-group">
-                            <button class="btn btn-success" onclick="checkAnswer()">Проверить</button>
-                            <button class="btn btn-secondary" onclick="showWelcome()">Главное меню</button>
+                            <button class="btn btn-success" onclick="checkAnswer()">Check</button>
+                            <button class="btn btn-secondary" onclick="showWelcome()">Main Menu</button>
                         </div>
                     </div>
                 </div>
@@ -160,27 +160,27 @@ async def read_root() -> str:
                         <div id="result-message" class="result-message"></div>
                         <div id="result-details" class="result-details"></div>
                         <div class="button-group">
-                            <button class="btn btn-primary" onclick="nextExercise()">Следующее упражнение</button>
-                            <button class="btn btn-secondary" onclick="showWelcome()">Главное меню</button>
+                            <button class="btn btn-primary" onclick="nextExercise()">Next Exercise</button>
+                            <button class="btn btn-secondary" onclick="showWelcome()">Main Menu</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="stats-panel" class="stats-panel">
                     <div class="stats-item">
-                        <span class="stats-label">Всего:</span>
+                        <span class="stats-label">Total:</span>
                         <span id="stats-total">0</span>
                     </div>
                     <div class="stats-item">
-                        <span class="stats-label">Правильно:</span>
+                        <span class="stats-label">Correct:</span>
                         <span id="stats-correct">0</span>
                     </div>
                     <div class="stats-item">
-                        <span class="stats-label">Неправильно:</span>
+                        <span class="stats-label">Incorrect:</span>
                         <span id="stats-incorrect">0</span>
                     </div>
                     <div class="stats-item">
-                        <span class="stats-label">Точность:</span>
+                        <span class="stats-label">Accuracy:</span>
                         <span id="stats-accuracy">0%</span>
                     </div>
                 </div>

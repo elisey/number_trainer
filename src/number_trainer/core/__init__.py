@@ -1,9 +1,5 @@
 """
-Core модуль - содержит основную бизнес-логику математического тренажера.
-
-Компоненты:
-- models: модели данных (Exercise, Result, Operation)
-- trainer: основной класс MathTrainer
+Core module - contains the main business logic of the mathematical trainer.
 """
 
 from .models import Exercise, Operation, Result

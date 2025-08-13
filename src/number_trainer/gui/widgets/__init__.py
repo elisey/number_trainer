@@ -1,5 +1,5 @@
 """
-Кастомные виджеты для GUI.
+Custom widgets for GUI.
 
-В будущем здесь могут быть специализированные компоненты интерфейса.
+In the future, specialized interface components may be added here.
 """

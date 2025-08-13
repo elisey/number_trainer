@@ -1,7 +1,8 @@
 """
-Тесты для проекта Number Trainer.
+Tests for Number Trainer project.
 
-Структура:
-- test_core: тесты для бизнес-логики
-- test_gui: тесты для GUI компонентов
+Structure:
+- test_core: tests for business logic
+- test_gui: tests for GUI components
+- test_web: tests for web interface
 """

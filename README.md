@@ -1,226 +1,226 @@
 # Number Trainer
 
 
-Математический тренажер для изучения арифметики с поддержкой GUI, консольного и веб-интерфейса.
+Mathematical trainer for learning arithmetic with support for GUI, console, and web interfaces.
 
-## Структура проекта
+## Project Structure
 
 ```
 number_trainer/
 ├── src/
-│   └── number_trainer/          # Основной пакет
-│       ├── core/                # Бизнес-логика
-│       │   ├── models.py        # Модели данных
-│       │   └── trainer.py       # Основной класс тренажера
-│       ├── gui/                 # Графический интерфейс
-│       │   ├── app.py          # GUI приложение
-│       │   └── styles.py       # Стили оформления
-│       ├── cli/                 # Консольный интерфейс
-│       │   └── console.py       # Консольная версия
-│       └── web/                 # Веб-интерфейс
-│           ├── app.py          # FastAPI приложение
-│           ├── routes.py       # API маршруты
-│           ├── models.py       # Pydantic модели
-│           ├── main.py         # Точка входа веб-сервера
-│           └── static/         # Статические файлы (CSS, JS)
-├── tests/                       # Тесты
-│   ├── test_core/              # Тесты бизнес-логики
-│   ├── test_gui/               # Тесты GUI
-│   └── test_web/               # Тесты веб-интерфейса
-├── main.py                      # Точка входа GUI
-├── demo.py                      # Демо консольной версии
-└── pyproject.toml              # Конфигурация проекта
+│   └── number_trainer/          # Main package
+│       ├── core/                # Business logic
+│       │   ├── models.py        # Data models
+│       │   └── trainer.py       # Main trainer class
+│       ├── gui/                 # Graphical interface
+│       │   ├── app.py          # GUI application
+│       │   └── styles.py       # Styling
+│       ├── cli/                 # Console interface
+│       │   └── console.py       # Console version
+│       └── web/                 # Web interface
+│           ├── app.py          # FastAPI application
+│           ├── routes.py       # API routes
+│           ├── models.py       # Pydantic models
+│           ├── main.py         # Web server entry point
+│           └── static/         # Static files (CSS, JS)
+├── tests/                       # Tests
+│   ├── test_core/              # Business logic tests
+│   ├── test_gui/               # GUI tests
+│   └── test_web/               # Web interface tests
+├── main.py                      # GUI entry point
+├── demo.py                      # Console demo
+└── pyproject.toml              # Project configuration
 ```
 
-## Установка и запуск
+## Installation and Setup
 
-Проект использует `uv` для управления зависимостями.
+The project uses `uv` for dependency management.
 
-### Требования
+### Requirements
 - Python >= 3.8
 - uv
 
-### Быстрый старт с Taskfile
+### Quick Start with Taskfile
 ```bash
-# Показать все доступные команды
+# Show all available commands
 task --list
 
-# Настроить среду разработки
+# Setup development environment
 task dev
 
-# Запустить GUI приложение
+# Launch GUI application
 task run
 
-# Запустить консольную версию
+# Launch console version
 task run-console
 
-# Запустить тесты
+# Run tests
 task test
 ```
 
-### Основные команды
+### Main Commands
 ```bash
-# 📦 УСТАНОВКА
-task install         # Установить зависимости
-task install-dev     # Установить dev зависимости
+# 📦 INSTALLATION
+task install         # Install dependencies
+task install-dev     # Install dev dependencies
 
-# 🏃 ЗАПУСК
-task run             # Запустить GUI приложение
-task run-console     # Запустить консольную версию
-task run-web         # Запустить веб-сервер (браузерная версия)
-task demo            # Показать демонстрацию
+# 🏃 LAUNCH
+task run             # Launch GUI application
+task run-console     # Launch console version
+task run-web         # Launch web server (browser version)
+task demo            # Show demonstration
 
-# 🧪 ТЕСТИРОВАНИЕ
-task test            # Запустить тесты
-task test-cov        # Тесты с покрытием кода
-task test-watch      # Тесты в режиме наблюдения
+# 🧪 TESTING
+task test            # Run tests
+task test-cov        # Tests with code coverage
+task test-watch      # Tests in watch mode
 
-# 🔧 КАЧЕСТВО КОДА
-task lint            # Проверить линтерами
-task format          # Отформатировать код
-task ci              # Все проверки CI
-task pre-commit      # Запустить pre-commit на всех файлах
+# 🔧 CODE QUALITY
+task lint            # Check with linters
+task format          # Format code
+task ci              # All CI checks
+task pre-commit      # Run pre-commit on all files
 
-# ℹ️ ИНФОРМАЦИЯ
-task info            # Информация о проекте
-task health          # Проверка здоровья
-task help            # Подробная справка
+# ℹ️ INFORMATION
+task info            # Project information
+task health          # Health check
+task help            # Detailed help
 ```
 
-### Альтернативный запуск
+### Alternative Launch
 ```bash
-# GUI версия
+# GUI version
 uv run python3 main.py
 uv run number-trainer
 
-# Консольная версия
+# Console version
 uv run python3 demo.py
 uv run number-trainer-console
 
-# Веб-версия
+# Web version
 uv run python3 web_main.py
 uv run number-trainer-web
 ```
 
-## Pre-commit хуки
+## Pre-commit Hooks
 
-Проект настроен с pre-commit хуками для автоматической проверки качества кода при каждом коммите.
+The project is configured with pre-commit hooks for automatic code quality checks on each commit.
 
-### Настройка pre-commit
+### Pre-commit Setup
 
 ```bash
 task install-dev
 task install-hooks
 ```
 
-### Что проверяется автоматически
+### What is Checked Automatically
 
-При каждом коммите запускаются:
-- **task ci** - все проверки качества кода (форматирование, линтинг, тесты)
-- **pre-commit hooks** - дополнительные проверки:
-  - Удаление trailing whitespace
-  - Исправление окончаний файлов
-  - Проверка YAML/JSON файлов
-  - Проверка на merge conflicts
-  - Проверка на конфликты регистра файлов
-  - Проверка docstring в начале файлов
-  - Проверка на debug statements
+On each commit, the following runs:
+- **task ci** - all code quality checks (formatting, linting, tests)
+- **pre-commit hooks** - additional checks:
+  - Remove trailing whitespace
+  - Fix file endings
+  - Check YAML/JSON files
+  - Check for merge conflicts
+  - Check for filename case conflicts
+  - Check docstrings at file beginning
+  - Check for debug statements
 
-### Ручной запуск проверок
+### Manual Check Execution
 
 ```bash
-# Запустить pre-commit на всех файлах
+# Run pre-commit on all files
 task pre-commit
 
-# Запустить только task ci
+# Run only task ci
 task ci
 
-# Запустить отдельные проверки
+# Run individual checks
 task format-check
 task lint
 task test
 ```
 
-## Веб-интерфейс
+## Web Interface
 
-Веб-версия Number Trainer предоставляет современный браузерный интерфейс с адаптивным дизайном для десктопа и мобильных устройств.
+The web version of Number Trainer provides a modern browser interface with responsive design for desktop and mobile devices.
 
-### Запуск веб-сервера
+### Launch Web Server
 ```bash
 task run-web
-# или
+# or
 uv run python3 web_main.py
 ```
 
-После запуска откройте браузер и перейдите по адресу: http://localhost:8000
+After launching, open your browser and go to: http://localhost:8000
 
-### Особенности веб-интерфейса
-- **Адаптивный дизайн** - работает на десктопе и мобильных устройствах
-- **Современный UI** - использует цветовую схему из GUI версии
-- **REST API** - полноценный API для интеграции
-- **Горячие клавиши** - Enter (проверить), Escape (главное меню)
-- **Статистика в реальном времени** - отслеживание прогресса
-- **Автопереход** - автоматический переход к следующему упражнению
+### Web Interface Features
+- **Responsive Design** - works on desktop and mobile devices
+- **Modern UI** - uses color scheme from GUI version
+- **REST API** - full API for integration
+- **Hotkeys** - Enter (check), Escape (main menu)
+- **Real-time Statistics** - progress tracking
+- **Auto-advance** - automatic transition to next exercise
 
 ### API Endpoints
-- `GET /` - главная страница приложения
-- `POST /api/exercise/new` - создать новое упражнение
-- `POST /api/exercise/check` - проверить ответ
-- `GET /api/stats` - получить статистику
-- `GET /api/health` - проверка состояния сервера
+- `GET /` - main application page
+- `POST /api/exercise/new` - create new exercise
+- `POST /api/exercise/check` - check answer
+- `GET /api/stats` - get statistics
+- `GET /api/health` - server health check
 
 ## Docker
 
-Number Trainer поддерживает запуск в Docker контейнере для упрощения развертывания и изоляции окружения.
+Number Trainer supports running in Docker containers for simplified deployment and environment isolation.
 
-### Быстрый старт с Docker
+### Quick Start with Docker
 
 ```bash
-# Собрать и запустить с помощью Docker Compose
+# Build and run with Docker Compose
 task docker-compose-up
 
-# Или собрать и запустить вручную
+# Or build and run manually
 task docker-build
 task docker-run
 ```
 
-### Docker команды
+### Docker Commands
 
 ```bash
 # 🐳 DOCKER
-task docker-build           # Собрать Docker образ
-task docker-run             # Запустить Docker контейнер
-task docker-stop            # Остановить контейнеры
-task docker-clean           # Очистить образы и контейнеры
+task docker-build           # Build Docker image
+task docker-run             # Run Docker container
+task docker-stop            # Stop containers
+task docker-clean           # Clean images and containers
 
 # 🐳 DOCKER COMPOSE
-task docker-compose-up      # Запустить через Docker Compose (development)
-task docker-compose-down    # Остановить Docker Compose
-task docker-compose-logs    # Показать логи
-task docker-compose-build   # Пересобрать образ
+task docker-compose-up      # Launch via Docker Compose (development)
+task docker-compose-down    # Stop Docker Compose
+task docker-compose-logs    # Show logs
+task docker-compose-build   # Rebuild image
 
 # 🐳 PRODUCTION DOCKER
-task docker-compose-prod    # Запустить в production режиме
-task docker-compose-prod-down # Остановить production
-task docker-compose-prod-logs # Логи production
-task docker-compose-prod-build # Пересобрать production образ
+task docker-compose-prod    # Launch in production mode
+task docker-compose-prod-down # Stop production
+task docker-compose-prod-logs # Production logs
+task docker-compose-prod-build # Rebuild production image
 
 # 🐳 GITHUB CONTAINER REGISTRY
-task docker-build-ghcr      # Собрать для GitHub Container Registry
-task docker-push-ghcr       # Опубликовать в GHCR
-task docker-publish         # Собрать и опубликовать
+task docker-build-ghcr      # Build for GitHub Container Registry
+task docker-push-ghcr       # Publish to GHCR
+task docker-publish         # Build and publish
 ```
 
-### Запуск из GitHub Container Registry
+### Running from GitHub Container Registry
 
 ```bash
-# Запустить последнюю версию
+# Run latest version
 docker run -p 8000:8000 ghcr.io/[username]/number-trainer:latest
 
-# Запустить конкретную версию
+# Run specific version
 docker run -p 8000:8000 ghcr.io/[username]/number-trainer:v1.0.0
 
-# Запустить major.minor версию (последний patch)
+# Run major.minor version (latest patch)
 docker run -p 8000:8000 ghcr.io/[username]/number-trainer:1.0
 ```
 
@@ -228,56 +228,56 @@ docker run -p 8000:8000 ghcr.io/[username]/number-trainer:1.0
 
 ### **Release Workflow**
 
-Number Trainer использует автоматизированный процесс релизов через GitHub Actions. Docker образы публикуются только при создании версионных тегов.
+Number Trainer uses an automated release process through GitHub Actions. Docker images are published only when version tags are created.
 
-#### **1. Подготовка к релизу**
+#### **1. Release Preparation**
 
 ```bash
-# Убедитесь, что вы на main ветке
+# Make sure you're on the main branch
 git checkout main
 git pull origin main
 
-# Проверьте текущую версию в pyproject.toml
+# Check current version in pyproject.toml
 cat pyproject.toml | grep version
 ```
 
-#### **2. Обновление версии**
+#### **2. Version Update**
 
 ```bash
-# Отредактируйте pyproject.toml
-# Измените version = "0.1.0" на новую версию, например "1.0.0"
+# Edit pyproject.toml
+# Change version = "0.1.0" to new version, e.g. "1.0.0"
 
-# Закоммитьте изменения версии
+# Commit version changes
 git add pyproject.toml
 git commit -m "Bump version to 1.0.0"
 git push origin main
 ```
 
-#### **3. Создание релиза**
+#### **3. Creating Release**
 
 ```bash
-# Создайте тег для релиза
+# Create release tag
 git tag v1.0.0
 
-# Отправьте тег в GitHub
+# Push tag to GitHub
 git push origin v1.0.0
 ```
 
-#### **4. Автоматическая сборка и публикация**
+#### **4. Automatic Build and Publication**
 
-После отправки тега GitHub Actions автоматически:
-- ✅ Соберет Docker образ
-- ✅ Протестирует его работоспособность
-- ✅ Опубликует в GitHub Container Registry
-- ✅ Создаст теги: `v1.0.0`, `1.0`, `latest`
+After pushing the tag, GitHub Actions automatically:
+- ✅ Builds Docker image
+- ✅ Tests its functionality
+- ✅ Publishes to GitHub Container Registry
+- ✅ Creates tags: `v1.0.0`, `1.0`, `latest`
 
-#### **5. Проверка релиза**
+#### **5. Release Verification**
 
 ```bash
-# Проверьте, что образ доступен
+# Check that image is available
 docker pull ghcr.io/[username]/number-trainer:v1.0.0
 
-# Протестируйте локально
+# Test locally
 docker run -p 8000:8000 ghcr.io/[username]/number-trainer:v1.0.0
 ```
 
@@ -285,41 +285,41 @@ docker run -p 8000:8000 ghcr.io/[username]/number-trainer:v1.0.0
 
 #### **Semantic Versioning (SemVer)**
 - `v1.0.0` - Major.Minor.Patch
-- `v1.1.0` - Новые функции (minor)
+- `v1.1.0` - New features (minor)
 - `v2.0.0` - Breaking changes (major)
 
 #### **Available Tags**
-- `latest` - Последний стабильный релиз
-- `v1.0.0` - Конкретная версия
-- `1.0` - Последний patch для major.minor
+- `latest` - Latest stable release
+- `v1.0.0` - Specific version
+- `1.0` - Latest patch for major.minor
 
 ### **Development vs Production**
 
 #### **Development Workflow**
 ```bash
-# Обычная разработка
+# Regular development
 git push origin main
-# → Запускает тестовую сборку (без публикации)
+# → Triggers test build (no publication)
 ```
 
 #### **Production Release**
 ```bash
-# Релиз
+# Release
 git tag v1.0.0 && git push origin v1.0.0
-# → Запускает production сборку и публикацию
+# → Triggers production build and publication
 ```
 
 ### **Deployment Examples**
 
 #### **Local Development**
 ```bash
-# Запуск локальной версии
+# Launch local version
 task docker-compose-up
 ```
 
 #### **Production Deployment**
 ```bash
-# Запуск production версии
+# Launch production version
 docker run -d -p 8000:8000 \
   --name number-trainer \
   ghcr.io/[username]/number-trainer:v1.0.0
@@ -327,7 +327,7 @@ docker run -d -p 8000:8000 \
 
 #### **Docker Compose Production**
 ```bash
-# Создайте docker-compose.yml
+# Create docker-compose.yml
 version: '3.8'
 services:
   number-trainer:
@@ -336,14 +336,14 @@ services:
       - "8000:8000"
     restart: unless-stopped
 
-# Запустите
+# Launch
 docker-compose up -d
 ```
 
 ### **Rollback Strategy**
 
 ```bash
-# Откат к предыдущей версии
+# Rollback to previous version
 docker stop number-trainer
 docker run -d -p 8000:8000 \
   --name number-trainer \
@@ -352,90 +352,90 @@ docker run -d -p 8000:8000 \
 
 ### **Monitoring Releases**
 
-- **GitHub Actions**: Проверьте статус сборки в Actions tab
-- **Container Registry**: Просмотрите опубликованные образы в Packages
+- **GitHub Actions**: Check build status in Actions tab
+- **Container Registry**: View published images in Packages
 - **Health Check**: `curl http://localhost:8000/api/health`
 
 ### **Quick Reference**
 
 #### **Common Release Commands**
 ```bash
-# Создать новый релиз
+# Create new release
 git tag v1.0.0 && git push origin v1.0.0
 
-# Список всех тегов
+# List all tags
 git tag -l
 
-# Удалить локальный тег (если нужно)
+# Delete local tag (if needed)
 git tag -d v1.0.0
 
-# Удалить удаленный тег (если нужно)
+# Delete remote tag (if needed)
 git push origin --delete v1.0.0
 ```
 
 #### **Check Release Status**
 ```bash
-# Проверить доступные образы
+# Check available images
 docker search ghcr.io/[username]/number-trainer
 
-# Проверить теги образа
+# Check image tags
 docker pull ghcr.io/[username]/number-trainer:latest
 docker images | grep number-trainer
 ```
 
-### Переменные окружения
+### Environment Variables
 
-- `PORT` - порт для запуска приложения (по умолчанию: 8000)
-- `HOST` - хост для привязки (по умолчанию: 0.0.0.0)
-- `WORKERS` - количество worker процессов (по умолчанию: 1, production: 4)
-- `LOG_LEVEL` - уровень логирования (по умолчанию: info, production: warning)
-- `PYTHONUNBUFFERED` - отключение буферизации Python (по умолчанию: 1)
+- `PORT` - port for application launch (default: 8000)
+- `HOST` - host for binding (default: 0.0.0.0)
+- `WORKERS` - number of worker processes (default: 1, production: 4)
+- `LOG_LEVEL` - logging level (default: info, production: warning)
+- `PYTHONUNBUFFERED` - disable Python buffering (default: 1)
 
 ### Production vs Development
 
-**Development режим:**
-- Автоперезагрузка при изменении кода
-- Подробное логирование
-- 1 worker процесс
+**Development mode:**
+- Auto-reload on code changes
+- Detailed logging
+- 1 worker process
 
-**Production режим:**
-- Отключена автоперезагрузка
-- Оптимизированное логирование
-- 4 worker процесса
-- Ограничения ресурсов (CPU/Memory)
-- Дополнительные меры безопасности
-- Read-only файловая система (кроме временных директорий)
+**Production mode:**
+- Auto-reload disabled
+- Optimized logging
+- 4 worker processes
+- Resource limits (CPU/Memory)
+- Additional security measures
+- Read-only file system (except temporary directories)
 
 ### Health Check
 
-Контейнер включает health check, который проверяет доступность API:
+The container includes a health check that verifies API availability:
 ```bash
 curl http://localhost:8000/api/health
 ```
 
-Ожидаемый ответ:
+Expected response:
 ```json
 {"status": "healthy", "service": "number-trainer-web"}
 ```
 
-## Структура проекта
+## Project Structure
 
-- `main.py` - основной файл приложения с GUI на tkinter
-- `pyproject.toml` - конфигурация проекта
-- `README.md` - документация
+- `main.py` - main application file with tkinter GUI
+- `pyproject.toml` - project configuration
+- `README.md` - documentation
 
-## Разработка
+## Development
 
-Приложение создано с использованием:
-- **Python** - основной язык программирования
-- **tkinter** - встроенная библиотека GUI для десктопной версии
-- **FastAPI** - современный веб-фреймворк для API
-- **uvicorn** - ASGI сервер для веб-приложения
-- **HTML/CSS/JavaScript** - фронтенд веб-интерфейса
-- **uv** - управление зависимостями и проектом
+The application is built using:
+- **Python** - main programming language
+- **tkinter** - built-in GUI library for desktop version
+- **FastAPI** - modern web framework for API
+- **uvicorn** - ASGI server for web application
+- **HTML/CSS/JavaScript** - web interface frontend
+- **uv** - dependency and project management
 
-### Архитектура
-- **Модульная структура** - разделение на core, gui, cli, web
-- **Единая бизнес-логика** - все интерфейсы используют общий `MathTrainer`
-- **REST API** - стандартизированное взаимодействие с веб-интерфейсом
-- **Адаптивный дизайн** - поддержка десктопа и мобильных устройств
+### Architecture
+- **Modular structure** - separation into core, gui, cli, web
+- **Unified business logic** - all interfaces use common `MathTrainer`
+- **REST API** - standardized interaction with web interface
+- **Responsive design** - support for desktop and mobile devices

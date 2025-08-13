@@ -1,0 +1,5 @@
+---
+description: run tests with command "task ci" before committing or after implementing a new feature
+globs:
+alwaysApply: true
+---

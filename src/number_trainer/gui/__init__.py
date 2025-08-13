@@ -1,10 +1,10 @@
 """
-GUI модуль - графический интерфейс на tkinter.
+GUI module - graphical interface on tkinter.
 
-Компоненты:
-- app: основной класс приложения NumberTrainerApp
-- styles: стили и темы оформления
-- widgets: кастомные виджеты
+Components:
+- app: main application class NumberTrainerApp
+- styles: styling and themes
+- widgets: custom widgets
 """
 
 from .app import NumberTrainerApp

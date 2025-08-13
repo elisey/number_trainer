@@ -1,32 +1,32 @@
-"""Современные стили и темы оформления для GUI приложения.
+"""Modern styles and themes for GUI application.
 
-Содержит настройки внешнего вида интерфейса в минималистичном стиле.
+Contains interface appearance settings in minimalist style.
 """
 
 from tkinter import ttk
 
-# Современная цветовая палитра
+# Modern color palette
 COLORS = {
-    "primary": "#2563eb",  # Синий
-    "primary_hover": "#1d4ed8",  # Темнее синий
-    "success": "#10b981",  # Зеленый
-    "error": "#ef4444",  # Красный
-    "warning": "#f59e0b",  # Оранжевый
-    "background": "#f8fafc",  # Светло-серый фон
-    "surface": "#ffffff",  # Белый
-    "text_primary": "#1e293b",  # Темно-серый текст
-    "text_secondary": "#64748b",  # Серый текст
-    "border": "#e2e8f0",  # Светло-серая граница
-    "shadow": "#00000010",  # Легкая тень
+    "primary": "#2563eb",  # Blue
+    "primary_hover": "#1d4ed8",  # Darker blue
+    "success": "#10b981",  # Green
+    "error": "#ef4444",  # Red
+    "warning": "#f59e0b",  # Orange
+    "background": "#f8fafc",  # Light gray background
+    "surface": "#ffffff",  # White
+    "text_primary": "#1e293b",  # Dark gray text
+    "text_secondary": "#64748b",  # Gray text
+    "border": "#e2e8f0",  # Light gray border
+    "shadow": "#00000010",  # Light shadow
 }
 
 
 def setup_styles() -> None:
-    """Настраивает современные стили для приложения"""
+    """Sets up modern styles for the application"""
     style = ttk.Style()
     style.theme_use("clam")
 
-    # Основные стили для фреймов
+    # Main styles for frames
     style.configure(
         "Card.TFrame",
         background=COLORS["surface"],
@@ -40,7 +40,7 @@ def setup_styles() -> None:
         relief="flat",
     )
 
-    # Стили для заголовков
+    # Styles for headers
     style.configure(
         "Title.TLabel",
         font=("SF Pro Display", 32, "bold"),
@@ -57,7 +57,7 @@ def setup_styles() -> None:
         anchor="center",
     )
 
-    # Стили для упражнений
+    # Styles for exercises
     style.configure(
         "Exercise.TLabel",
         font=("SF Pro Display", 28, "bold"),
@@ -74,7 +74,7 @@ def setup_styles() -> None:
         anchor="center",
     )
 
-    # Стили для кнопок
+    # Styles for buttons
     style.configure(
         "Primary.TButton",
         font=("SF Pro Display", 14, "bold"),
@@ -116,7 +116,7 @@ def setup_styles() -> None:
         padding=(20, 12),
     )
 
-    # Стили для полей ввода
+    # Styles for input fields
     style.configure(
         "Modern.TEntry",
         font=("SF Pro Display", 24),
@@ -134,7 +134,7 @@ def setup_styles() -> None:
         bordercolor=[("focus", COLORS["primary"]), ("!focus", COLORS["border"])],
     )
 
-    # Стиль для поля ввода с ошибкой
+    # Style for input field with error
     style.configure(
         "Error.TEntry",
         font=("SF Pro Display", 24),
@@ -152,7 +152,7 @@ def setup_styles() -> None:
         bordercolor=[("focus", COLORS["error"]), ("!focus", COLORS["error"])],
     )
 
-    # Стили для статистики
+    # Styles for statistics
     style.configure(
         "Stats.TLabel",
         font=("SF Pro Display", 14),
@@ -170,10 +170,10 @@ def setup_styles() -> None:
 
 def get_fonts() -> dict:
     """
-    Возвращает словарь с настройками шрифтов
+    Returns a dictionary with font settings
 
     Returns:
-        Словарь с настройками шрифтов для разных элементов
+        Dictionary with font settings for different elements
     """
     return {
         "title": ("SF Pro Display", 32, "bold"),
@@ -188,5 +188,5 @@ def get_fonts() -> dict:
 
 
 def get_colors() -> dict:
-    """Возвращает цветовую палитру приложения"""
+    """Returns the application color palette"""
     return COLORS.copy()
