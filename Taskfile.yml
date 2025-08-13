@@ -30,6 +30,12 @@ tasks:
     generates:
       - uv.lock
 
+  install-hooks:
+    desc: "Установить pre-commit хуки"
+    deps: [install-dev]
+    cmds:
+      - "{{.UV_CMD}} run pre-commit install"
+
   # Запуск приложения
   run:
     desc: "Запустить GUI приложение"
@@ -96,7 +102,7 @@ tasks:
     cmds:
       - "{{.UV_CMD}} run mypy --package number_trainer --ignore-missing-imports"
       - "{{.UV_CMD}} run mypy main.py web_main.py --ignore-missing-imports"
-  
+
   format:
     desc: "Отформатировать код"
     deps: [install-dev]
@@ -119,6 +125,12 @@ tasks:
       - task: lint
       - task: test-cov
 
+  pre-commit:
+    desc: "Запустить pre-commit на всех файлах"
+    deps: [install-dev]
+    cmds:
+      - "{{.UV_CMD}} run pre-commit run --all-files"
+
   # Очистка
   clean:
     desc: "Очистить временные файлы"
@@ -132,6 +144,7 @@ tasks:
       - rm -rf .ruff_cache
       - rm -rf .task
       - rm -rf dist
+      - rm -rf .pre-commit
 
   clean-all:
     desc: "Полная очистка включая виртуальное окружение"

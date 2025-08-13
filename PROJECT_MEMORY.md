@@ -44,7 +44,7 @@ number_trainer/
   - Real-time timing of exercise completion
   - Statistics panel (total/correct/incorrect/accuracy)
   - Results feedback with auto-progression
-- **Hotkeys**: 
+- **Hotkeys**:
   - Enter (check answer)
   - Escape (main screen)
   - Ctrl+N (new exercise)
@@ -88,7 +88,7 @@ number_trainer/
 
 ### Taskfile.yml (20+ Commands)
 - **Installation**: `task install`, `task install-dev`, `task dev`
-- **Running**: 
+- **Running**:
   - `task run` (GUI)
   - `task run-console` (CLI)
   - `task run-web` (Web server)
@@ -114,7 +114,7 @@ number_trainer/
 - **Total Tests**: 38 tests across all modules
 - **Test Structure**:
   - `test_core/` - Business logic tests
-  - `test_gui/` - GUI component tests  
+  - `test_gui/` - GUI component tests
   - `test_web/` - Web API tests (14 tests)
 - **Status**: All tests pass successfully
 
@@ -161,7 +161,7 @@ task install-dev
 # Run GUI version
 task run
 
-# Run console version  
+# Run console version
 task run-console
 
 # Run web version

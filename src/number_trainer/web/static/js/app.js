@@ -41,10 +41,10 @@ class NumberTrainerApp {
         document.querySelectorAll('.screen').forEach(screen => {
             screen.classList.add('hidden');
         });
-        
+
         // Show target screen
         document.getElementById(screenId).classList.remove('hidden');
-        
+
         // Focus on answer input if showing exercise screen
         if (screenId === 'exercise-screen') {
             setTimeout(() => {
@@ -81,11 +81,11 @@ class NumberTrainerApp {
 
             this.currentExercise = await response.json();
             this.startTime = Date.now();
-            
+
             // Display the exercise
             document.getElementById('question').textContent = this.currentExercise.question;
             document.getElementById('answer-input').value = '';
-            
+
             this.showScreen('exercise-screen');
         } catch (error) {
             console.error('Error generating exercise:', error);
@@ -98,7 +98,7 @@ class NumberTrainerApp {
 
         const answerInput = document.getElementById('answer-input');
         const answer = parseInt(answerInput.value);
-        
+
         if (isNaN(answer)) {
             alert('Пожалуйста, введите число');
             answerInput.focus();
@@ -136,18 +136,18 @@ class NumberTrainerApp {
     showResult(result) {
         const messageEl = document.getElementById('result-message');
         const detailsEl = document.getElementById('result-details');
-        
+
         messageEl.textContent = result.message;
         messageEl.className = `result-message ${result.correct ? 'correct' : 'incorrect'}`;
-        
+
         let details = '';
         if (result.time_taken) {
             details += `Время: ${result.time_taken.toFixed(1)} сек`;
         }
         detailsEl.textContent = details;
-        
+
         this.showScreen('result-screen');
-        
+
         // Auto-advance to next exercise after 3 seconds for correct answers
         if (result.correct) {
             setTimeout(() => {
@@ -164,9 +164,9 @@ class NumberTrainerApp {
         try {
             const response = await fetch('/api/stats');
             if (!response.ok) return;
-            
+
             const stats = await response.json();
-            
+
             document.getElementById('stats-total').textContent = stats.total_exercises;
             document.getElementById('stats-correct').textContent = stats.correct_answers;
             document.getElementById('stats-incorrect').textContent = stats.incorrect_answers;

@@ -42,7 +42,7 @@ git commit -m "Test workflow"
 git push origin main
 ```
 
-**Expected Result**: 
+**Expected Result**:
 - Go to **Actions** tab
 - You should see "Build Docker Image (Test Only)" workflow running
 - Status should be green ✅

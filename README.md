@@ -79,6 +79,7 @@ task test-watch      # Тесты в режиме наблюдения
 task lint            # Проверить линтерами
 task format          # Отформатировать код
 task ci              # Все проверки CI
+task pre-commit      # Запустить pre-commit на всех файлах
 
 # ℹ️ ИНФОРМАЦИЯ
 task info            # Информация о проекте
@@ -99,6 +100,45 @@ uv run number-trainer-console
 # Веб-версия
 uv run python3 web_main.py
 uv run number-trainer-web
+```
+
+## Pre-commit хуки
+
+Проект настроен с pre-commit хуками для автоматической проверки качества кода при каждом коммите.
+
+### Настройка pre-commit
+
+```bash
+task install-dev
+task install-hooks
+```
+
+### Что проверяется автоматически
+
+При каждом коммите запускаются:
+- **task ci** - все проверки качества кода (форматирование, линтинг, тесты)
+- **pre-commit hooks** - дополнительные проверки:
+  - Удаление trailing whitespace
+  - Исправление окончаний файлов
+  - Проверка YAML/JSON файлов
+  - Проверка на merge conflicts
+  - Проверка на конфликты регистра файлов
+  - Проверка docstring в начале файлов
+  - Проверка на debug statements
+
+### Ручной запуск проверок
+
+```bash
+# Запустить pre-commit на всех файлах
+task pre-commit
+
+# Запустить только task ci
+task ci
+
+# Запустить отдельные проверки
+task format-check
+task lint
+task test
 ```
 
 ## Веб-интерфейс
