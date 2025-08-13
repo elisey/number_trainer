@@ -30,18 +30,11 @@ jobs:
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Using version: $VERSION"
 
-    - name: Build Docker image (test only)
-      id: build
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: false
-        tags: number-trainer:test
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-
-    - name: Test the image
+    - name: Build and test Docker image
       run: |
+        echo "Building Docker image..."
+        docker build -t number-trainer:test .
+        
         echo "Starting container for testing..."
         docker run --rm -d -p 8000:8000 --name test-app number-trainer:test
         

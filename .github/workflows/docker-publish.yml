@@ -52,18 +52,11 @@ jobs:
           org.opencontainers.image.revision={{sha}}
           org.opencontainers.image.created={{timestamp}}
 
-    - name: Build Docker image
-      id: build
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: false
-        tags: number-trainer:latest
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-
-    - name: Test the image
+    - name: Build and test Docker image
       run: |
+        echo "Building Docker image..."
+        docker build -t number-trainer:latest .
+        
         echo "Starting container for testing..."
         docker run --rm -d -p 8000:8000 --name test-app number-trainer:latest
         
