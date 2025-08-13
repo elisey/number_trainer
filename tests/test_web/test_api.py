@@ -44,9 +44,7 @@ def test_create_exercise_invalid_difficulty():
 
 def test_check_answer_not_found():
     """Test checking answer for non-existent exercise."""
-    response = client.post(
-        "/api/exercise/check", json={"exercise_id": "non-existent", "answer": 42}
-    )
+    response = client.post("/api/exercise/check", json={"exercise_id": "non-existent", "answer": 42})
     assert response.status_code == 404
 
 

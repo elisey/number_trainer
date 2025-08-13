@@ -88,20 +88,20 @@ tasks:
     desc: "Проверить код ruff"
     deps: [install-dev]
     cmds:
-      - "{{.UV_CMD}} run ruff check --fix src/ tests/ main.py demo.py"
+      - "{{.UV_CMD}} run ruff check --fix src/ tests/ main.py web_main.py "
 
   mypy:
     desc: "Проверить код mypy"
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run mypy --package number_trainer --ignore-missing-imports"
-      - "{{.UV_CMD}} run mypy main.py demo.py --ignore-missing-imports"
+      - "{{.UV_CMD}} run mypy main.py web_main.py --ignore-missing-imports"
   
   format:
     desc: "Отформатировать код"
     deps: [install-dev]
     cmds:
-      - "{{.UV_CMD}} run ruff format src/ tests/ main.py demo.py"
+      - "{{.UV_CMD}} run ruff format src/ tests/ main.py web_main.py"
 
   format-check:
     desc: "Проверить форматирование кода"
@@ -149,3 +149,109 @@ tasks:
       - pyproject.toml
     generates:
       - dist/
+
+  # Docker commands
+  docker-build:
+    desc: "Собрать Docker образ"
+    cmds:
+      - docker build -t {{.PROJECT_NAME}}:latest .
+    sources:
+      - Dockerfile
+      - pyproject.toml
+      - "src/**/*.py"
+
+  docker-run:
+    desc: "Запустить Docker контейнер"
+    cmds:
+      - docker run -p 8000:8000 {{.PROJECT_NAME}}:latest
+
+  docker-stop:
+    desc: "Остановить все контейнеры приложения"
+    cmds:
+      - docker stop $$(docker ps -q --filter ancestor={{.PROJECT_NAME}}:latest) 2>/dev/null || true
+
+  docker-clean:
+    desc: "Очистить Docker образы и контейнеры"
+    cmds:
+      - docker stop $$(docker ps -q --filter ancestor={{.PROJECT_NAME}}:latest) 2>/dev/null || true
+      - docker rm $$(docker ps -aq --filter ancestor={{.PROJECT_NAME}}:latest) 2>/dev/null || true
+      - docker rmi {{.PROJECT_NAME}}:latest 2>/dev/null || true
+
+  # GitHub Container Registry
+  docker-build-ghcr:
+    desc: "Собрать Docker образ для GitHub Container Registry"
+    cmds:
+      - docker build -t ghcr.io/{{.GITHUB_USERNAME}}/{{.PROJECT_NAME}}:latest .
+      - docker tag ghcr.io/{{.GITHUB_USERNAME}}/{{.PROJECT_NAME}}:latest ghcr.io/{{.GITHUB_USERNAME}}/{{.PROJECT_NAME}}:{{.VERSION}}
+    vars:
+      GITHUB_USERNAME: '{{.GITHUB_USERNAME | default .PROJECT_NAME}}'
+      VERSION: '{{.VERSION | default "latest"}}'
+    sources:
+      - Dockerfile
+      - pyproject.toml
+      - "src/**/*.py"
+
+  docker-push-ghcr:
+    desc: "Опубликовать Docker образ в GitHub Container Registry"
+    cmds:
+      - echo "Logging in to GitHub Container Registry..."
+      - echo "{{.GITHUB_TOKEN}}" | docker login ghcr.io -u {{.GITHUB_USERNAME}} --password-stdin
+      - docker push ghcr.io/{{.GITHUB_USERNAME}}/{{.PROJECT_NAME}}:latest
+      - docker push ghcr.io/{{.GITHUB_USERNAME}}/{{.PROJECT_NAME}}:{{.VERSION}}
+    vars:
+      GITHUB_USERNAME: '{{.GITHUB_USERNAME | default .PROJECT_NAME}}'
+      VERSION: '{{.VERSION | default "latest"}}'
+    env:
+      GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
+    silent: true
+
+  docker-publish:
+    desc: "Собрать и опубликовать Docker образ в GitHub Container Registry"
+    cmds:
+      - task: docker-build-ghcr
+      - task: docker-push-ghcr
+    vars:
+      GITHUB_USERNAME: '{{.GITHUB_USERNAME | default .PROJECT_NAME}}'
+      VERSION: '{{.VERSION | default "latest"}}'
+
+  # Docker Compose commands
+  docker-compose-up:
+    desc: "Запустить приложение через Docker Compose"
+    cmds:
+      - docker-compose up -d
+
+  docker-compose-down:
+    desc: "Остановить приложение через Docker Compose"
+    cmds:
+      - docker-compose down
+
+  docker-compose-logs:
+    desc: "Показать логи Docker Compose"
+    cmds:
+      - docker-compose logs -f
+
+  docker-compose-build:
+    desc: "Пересобрать образ через Docker Compose"
+    cmds:
+      - docker-compose build --no-cache
+
+  # Production Docker commands
+  docker-compose-prod:
+    desc: "Запустить приложение в production режиме"
+    cmds:
+      - docker-compose -f docker-compose.prod.yml up -d
+
+  docker-compose-prod-down:
+    desc: "Остановить production приложение"
+    cmds:
+      - docker-compose -f docker-compose.prod.yml down
+
+  docker-compose-prod-logs:
+    desc: "Показать логи production приложения"
+    cmds:
+      - docker-compose -f docker-compose.prod.yml logs -f
+
+  docker-compose-prod-build:
+    desc: "Пересобрать production образ"
+    cmds:
+      - docker-compose -f docker-compose.prod.yml build --no-cache

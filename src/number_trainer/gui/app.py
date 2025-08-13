@@ -28,7 +28,7 @@ class NumberTrainerApp:
 
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
-        
+
         # Type annotations for dynamically created attributes
         self.total_exercises_label: ttk.Label
         self.correct_answers_label: ttk.Label
@@ -93,15 +93,11 @@ class NumberTrainerApp:
         header_frame.pack(fill=tk.X, pady=(0, 30))
 
         # Заголовок
-        title_label = ttk.Label(
-            header_frame, text="Number Trainer", style="Title.TLabel"
-        )
+        title_label = ttk.Label(header_frame, text="Number Trainer", style="Title.TLabel")
         title_label.pack()
 
         # Подзаголовок
-        subtitle_label = ttk.Label(
-            header_frame, text="Тренажер устного счета", style="Subtitle.TLabel"
-        )
+        subtitle_label = ttk.Label(header_frame, text="Тренажер устного счета", style="Subtitle.TLabel")
         subtitle_label.pack(pady=(5, 0))
 
     def create_content_area(self, parent: tk.Widget) -> None:
@@ -133,9 +129,7 @@ class NumberTrainerApp:
         for i in range(4):
             stats_container.columnconfigure(i, weight=1)
 
-    def create_stat_column(
-        self, parent: tk.Widget, title: str, stat_key: str, column: int
-    ) -> None:
+    def create_stat_column(self, parent: tk.Widget, title: str, stat_key: str, column: int) -> None:
         """Создает колонку статистики"""
         col_frame = ttk.Frame(parent, style="Card.TFrame")
         col_frame.grid(row=0, column=column, padx=20, sticky="ew")
@@ -187,9 +181,7 @@ class NumberTrainerApp:
         difficulty_frame = ttk.Frame(self.content_container, style="Card.TFrame")
         difficulty_frame.pack(pady=20)
 
-        ttk.Label(
-            difficulty_frame, text="Выберите сложность:", style="Result.TLabel"
-        ).pack(pady=(0, 15))
+        ttk.Label(difficulty_frame, text="Выберите сложность:", style="Result.TLabel").pack(pady=(0, 15))
 
         button_frame = ttk.Frame(difficulty_frame, style="Card.TFrame")
         button_frame.pack()
@@ -293,9 +285,7 @@ class NumberTrainerApp:
         time_taken = time.time() - self.exercise_start_time
 
         # Проверяем ответ
-        result = self.trainer.check_answer(
-            self.current_exercise, user_answer, time_taken
-        )
+        result = self.trainer.check_answer(self.current_exercise, user_answer, time_taken)
         self.show_result(result)
 
         # Обновляем статистику
@@ -308,9 +298,7 @@ class NumberTrainerApp:
             time_taken = time.time() - self.exercise_start_time
 
             # Считаем пропуск как неправильный ответ
-            result = self.trainer.check_answer(
-                self.current_exercise, -999999, time_taken
-            )
+            result = self.trainer.check_answer(self.current_exercise, -999999, time_taken)
             self.show_result(result, skipped=True)
             self.update_stats()
 
@@ -327,9 +315,7 @@ class NumberTrainerApp:
             status_text = "Неправильно 😔"
 
         # Статус
-        status_label = ttk.Label(
-            self.content_container, text=status_text, style="Exercise.TLabel"
-        )
+        status_label = ttk.Label(self.content_container, text=status_text, style="Exercise.TLabel")
         status_label.pack(pady=(60, 20))
 
         # Правильный ответ
@@ -363,9 +349,7 @@ class NumberTrainerApp:
         """Показывает сообщение об ошибке"""
         # Можно добавить всплывающее уведомление
         self.answer_entry.configure(style="Error.TEntry")
-        self.root.after(
-            1000, lambda: self.answer_entry.configure(style="Modern.TEntry")
-        )
+        self.root.after(1000, lambda: self.answer_entry.configure(style="Modern.TEntry"))
 
     def update_stats(self) -> None:
         """Обновляет отображение статистики"""

@@ -187,9 +187,7 @@ class TestMathTrainer:
             trainer.check_answer(exercise, exercise.correct_answer)  # Правильный ответ
 
         exercise = trainer.generate_exercise()
-        trainer.check_answer(
-            exercise, exercise.correct_answer + 1
-        )  # Неправильный ответ
+        trainer.check_answer(exercise, exercise.correct_answer + 1)  # Неправильный ответ
 
         stats = trainer.get_stats()
         assert stats["total_exercises"] == 5
@@ -252,9 +250,7 @@ class TestResult:
 
     def test_result_creation(self):
         """Тест создания объекта Result"""
-        result = Result(
-            is_correct=True, user_answer=8, correct_answer=8, message="Правильно!"
-        )
+        result = Result(is_correct=True, user_answer=8, correct_answer=8, message="Правильно!")
 
         assert result.is_correct is True
         assert result.user_answer == 8

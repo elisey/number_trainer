@@ -26,9 +26,7 @@ def test_exercise_request_invalid():
 
 def test_exercise_response():
     """Test exercise response model."""
-    response = ExerciseResponse(
-        exercise_id="test-id", question="2 + 3", operation="addition"
-    )
+    response = ExerciseResponse(exercise_id="test-id", question="2 + 3", operation="addition")
     assert response.exercise_id == "test-id"
     assert response.question == "2 + 3"
     assert response.operation == "addition"
@@ -50,9 +48,7 @@ def test_answer_request_without_time():
 
 def test_answer_response():
     """Test answer response model."""
-    response = AnswerResponse(
-        correct=True, correct_answer=5, message="Правильно!", time_taken=2.5
-    )
+    response = AnswerResponse(correct=True, correct_answer=5, message="Правильно!", time_taken=2.5)
     assert response.correct is True
     assert response.correct_answer == 5
     assert response.message == "Правильно!"

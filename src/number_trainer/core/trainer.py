@@ -94,9 +94,7 @@ class MathTrainer:
 
         return self.current_exercise
 
-    def check_answer(
-        self, exercise: Exercise, user_answer: int, time_taken: float = 0.0
-    ) -> Result:
+    def check_answer(self, exercise: Exercise, user_answer: int, time_taken: float = 0.0) -> Result:
         """
         Проверяет ответ пользователя
 
@@ -145,13 +143,9 @@ class MathTrainer:
         Returns:
             Словарь со статистикой
         """
-        stats: Dict[str, Union[int, float]] = cast(
-            Dict[str, Union[int, float]], self.stats.copy()
-        )
+        stats: Dict[str, Union[int, float]] = cast(Dict[str, Union[int, float]], self.stats.copy())
         if stats["total_exercises"] > 0:
-            stats["accuracy"] = round(
-                (stats["correct_answers"] / stats["total_exercises"]) * 100, 1
-            )
+            stats["accuracy"] = round((stats["correct_answers"] / stats["total_exercises"]) * 100, 1)
         else:
             stats["accuracy"] = 0.0
         return stats

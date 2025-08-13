@@ -7,9 +7,7 @@
 from ..core.trainer import MathTrainer
 
 
-def run_console_trainer(
-    min_digits: int = 1, max_digits: int = 2, num_exercises: int = 3
-) -> None:
+def run_console_trainer(min_digits: int = 1, max_digits: int = 2, num_exercises: int = 3) -> None:
     """
     Запускает консольную версию математического тренажера
 

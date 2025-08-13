@@ -91,9 +91,7 @@ async def get_stats() -> StatsResponse:
 
     # Calculate overall accuracy
     if total_stats["total_exercises"] > 0:
-        total_stats["accuracy"] = round(
-            (total_stats["correct_answers"] / total_stats["total_exercises"]) * 100, 1
-        )
+        total_stats["accuracy"] = round((total_stats["correct_answers"] / total_stats["total_exercises"]) * 100, 1)
 
     return StatsResponse(
         total_exercises=int(total_stats["total_exercises"]),
