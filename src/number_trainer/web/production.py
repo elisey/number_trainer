@@ -1,6 +1,7 @@
 """Production entry point for Number Trainer web application."""
 
 import os
+
 import uvicorn
 
 

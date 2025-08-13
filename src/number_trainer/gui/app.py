@@ -8,7 +8,7 @@ import time
 import tkinter as tk
 from enum import Enum
 from tkinter import ttk
-from typing import Optional, Callable, Any
+from typing import Optional
 
 from ..core.models import Exercise, Result
 from ..core.trainer import MathTrainer
