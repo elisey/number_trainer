@@ -102,13 +102,14 @@ tasks:
     deps: [install-dev]
     cmds:
       - "{{.UV_CMD}} run ruff format src/ tests/ main.py web_main.py"
+      - "{{.UV_CMD}} run ruff check --fix src/ tests/ main.py web_main.py"
 
   format-check:
     desc: "Проверить форматирование кода"
     deps: [install-dev]
     cmds:
-      - "{{.UV_CMD}} run ruff format --check src/ tests/ main.py demo.py"
-      - "{{.UV_CMD}} run ruff check src/ tests/ main.py demo.py"
+      - "{{.UV_CMD}} run ruff format --check src/ tests/ main.py web_main.py"
+      - "{{.UV_CMD}} run ruff check src/ tests/ main.py web_main.py"
 
   # CI/CD команды
   ci:
