@@ -34,20 +34,20 @@ jobs:
       run: |
         echo "Building Docker image..."
         docker build -t number-trainer:test .
-        
+
         echo "Starting container for testing..."
         docker run --rm -d -p 8000:8000 --name test-app number-trainer:test
-        
+
         echo "Waiting for application to start..."
         sleep 10
-        
+
         echo "Testing health endpoint..."
         curl -f http://localhost:8000/api/health || {
           echo "Health check failed!"
           docker logs test-app
           exit 1
         }
-        
+
         echo "Health check passed! Stopping container..."
         docker stop test-app
         echo "Test completed successfully!"
