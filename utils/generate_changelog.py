@@ -61,7 +61,7 @@ def get_merge_commits(start_tag):
 
 def generate_changelog_section(version, commits):
     today = datetime.today().strftime("%Y-%m-%d")
-    lines = [f"## {version}", f"### {today}", ""]
+    lines = [f"## v{version}", f"### {today}", ""]
     for commit in commits:
         lines.append(f"- {commit['title']} ({commit['date']})")
         for body_line in commit["body"]:
@@ -73,7 +73,7 @@ def generate_changelog_section(version, commits):
 def write_changelog_file(version, section):
     changelog_dir = Path("changelog")
     changelog_dir.mkdir(exist_ok=True)
-    changelog_file = changelog_dir / f"{version}.md"
+    changelog_file = changelog_dir / f"v{version}.md"
     changelog_file.write_text(section)
     print(f"✅ Changelog for version {version} written to {changelog_file}")
 

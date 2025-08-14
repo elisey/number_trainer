@@ -1,15 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
-# Ensure working tree is clean
-if ! git diff --quiet || ! git diff --cached --quiet; then
-  echo "❌ Error: You have uncommitted changes. Please commit or stash them before running the release script."
-  exit 1
-fi
-
 echo "🔬 Running tests with 'task ci'..."
 if ! task ci; then
     echo "❌ Tests failed. Aborting release."
+    exit 1
+fi
+
+echo "🔬 Running precommit hooks..."
+if ! task pre-commit; then
+    echo "❌ Precommit failed. Aborting release."
     exit 1
 fi
 
@@ -25,12 +25,34 @@ if [ -z "$version" ]; then
   exit 1
 fi
 
+# Check for uncommitted changes
+stashed=0
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  echo "💾 Detected uncommitted changes. Stashing..."
+  git stash push -u -m "release-script-stash"
+  stashed=1
+  echo "✅ Changes stashed."
+fi
+
 # Update main branch
 echo "🚀  Creating new release branch..."
 git fetch origin main
 git checkout -B main origin/main
 git pull origin main
 git checkout -b "release/v$version"
+
+# Restore stashed changes if needed
+if [ "$stashed" -eq 1 ]; then
+  echo "♻️  Restoring stashed changes..."
+  if git stash list | grep -q "release-script-stash"; then
+    git stash pop || {
+      echo "⚠️  Failed to apply stashed changes automatically. Please resolve conflicts manually."
+    }
+    echo "✅ Changes restored."
+  else
+    echo "⚠️  No matching stash found. Skipping restore."
+  fi
+fi
 
 # Generate changelog
 echo "📝  Generating changelog for version $version..."
@@ -53,11 +75,12 @@ read -rp "Press Enter to continue with the release, or Ctrl+C to abort..."
 echo "🔄  Updating version in pyproject.toml to $version..."
 sed -i.bak -E "s/^(version *= *\").*(\")/\1$version\2/" pyproject.toml
 rm pyproject.toml.bak
+uv sync
 echo "✅  Version updated in pyproject.toml."
 
 # Commit changes
 echo "💾  Committing changelog and pyproject.toml..."
-git add "changelog/v$version.md" pyproject.toml
+git add "changelog/v$version.md" pyproject.toml uv.lock
 git commit -m "chore: bump version to v$version"
 echo "✅  Commit created."
 
@@ -66,20 +89,10 @@ echo "🔄  Pushing release branch..."
 git push --set-upstream origin "release/v$version"
 echo "✅  Branch pushed."
 
-# Create a temporary body file
-body_file=$(mktemp)
-trap 'rm -f "$body_file"' EXIT
-{
-  echo "Release v$version"
-  echo
-  cat "changelog/v$version.md"
-} > "$body_file"
-
 gh pr create --base main --head "release/v$version" \
   --title "Release v$version" \
-  --body-file "$body_file"
+  --body-file "changelog/v$version.md"
 
-rm "$body_file"
 pr_url=$(gh pr view "release/v$version" --json url -q ".url")
 echo "✅  Pull request created: $pr_url"
 
