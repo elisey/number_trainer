@@ -52,27 +52,21 @@ jobs:
           org.opencontainers.image.revision={{sha}}
           org.opencontainers.image.created={{timestamp}}
 
-    - name: Build and test Docker image
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Install dependencies
+      run: uv sync --group dev
+
+    - name: Build and test Docker image using integration tests
       run: |
-        echo "Building Docker image..."
-        docker build -t number-trainer:latest .
-
-        echo "Starting container for testing..."
-        docker run --rm -d -p 8000:8000 --name test-app number-trainer:latest
-
-        echo "Waiting for application to start..."
-        sleep 10
-
-        echo "Testing health endpoint..."
-        curl -f http://localhost:8000/api/health || {
-          echo "Health check failed!"
-          docker logs test-app
-          exit 1
-        }
-
-        echo "Health check passed! Stopping container..."
-        docker stop test-app
-        echo "Test completed successfully!"
+        echo "Running Docker integration tests..."
+        uv run task test-integration
 
     - name: Push Docker image
       uses: docker/build-push-action@v5
