@@ -1,7 +1,6 @@
 """API routes for Number Trainer web interface."""
 
 import uuid
-from typing import Dict
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import HTMLResponse
@@ -17,12 +16,12 @@ from .models import (
 )
 
 # Global trainers for different difficulties and active exercises storage
-trainers: Dict[int, MathTrainer] = {
+trainers: dict[int, MathTrainer] = {
     1: MathTrainer(min_digits=1, max_digits=1),
     2: MathTrainer(min_digits=2, max_digits=2),
     3: MathTrainer(min_digits=3, max_digits=3),
 }
-active_exercises: Dict[str, tuple] = {}  # exercise_id -> (exercise, trainer)
+active_exercises: dict[str, tuple] = {}  # exercise_id -> (exercise, trainer)
 
 router = APIRouter()
 
@@ -103,7 +102,7 @@ async def get_stats() -> StatsResponse:
 
 
 @router.get("/api/health")
-async def health_check() -> Dict[str, str]:
+async def health_check() -> dict[str, str]:
     """Health check endpoint."""
     return {"status": "healthy", "service": "number-trainer-web"}
 

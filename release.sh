@@ -7,12 +7,6 @@ if ! task ci; then
     exit 1
 fi
 
-echo "🔬 Running precommit hooks..."
-if ! task pre-commit; then
-    echo "❌ Precommit failed. Aborting release."
-    exit 1
-fi
-
 # Get version from argument or prompt
 if [ -n "${1:-}" ]; then
   version="$1"

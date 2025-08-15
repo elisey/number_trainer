@@ -5,7 +5,7 @@ Contains logic for generating exercises, checking answers, and maintaining stati
 """
 
 import random
-from typing import Dict, Optional, Union, cast
+from typing import cast
 
 from .models import Exercise, Operation, Result
 
@@ -30,7 +30,7 @@ class MathTrainer:
         if self.min_digits > self.max_digits:
             self.min_digits = self.max_digits
 
-        self.current_exercise: Optional[Exercise] = None
+        self.current_exercise: Exercise | None = None
         self.stats = {
             "total_exercises": 0,
             "correct_answers": 0,
@@ -135,14 +135,14 @@ class MathTrainer:
             return "No active exercise"
         return str(self.current_exercise)
 
-    def get_stats(self) -> Dict[str, Union[int, float]]:
+    def get_stats(self) -> dict[str, int | float]:
         """
         Returns training statistics
 
         Returns:
             Dictionary with statistics
         """
-        stats: Dict[str, Union[int, float]] = cast(Dict[str, Union[int, float]], self.stats.copy())
+        stats: dict[str, int | float] = cast(dict[str, int | float], self.stats.copy())
         if stats["total_exercises"] > 0:
             stats["accuracy"] = round((stats["correct_answers"] / stats["total_exercises"]) * 100, 1)
         else:
