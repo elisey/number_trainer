@@ -30,4 +30,4 @@ jobs:
         version: '3.x'
 
     - name: Run CI checks
-      run: task ci
+      run: task ci-long
