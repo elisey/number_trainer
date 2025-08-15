@@ -8,7 +8,6 @@ import time
 import tkinter as tk
 from enum import Enum
 from tkinter import ttk
-from typing import Optional
 
 from ..core.models import Exercise, Result
 from ..core.trainer import MathTrainer
@@ -34,7 +33,7 @@ class NumberTrainerApp:
         self.correct_answers_label: ttk.Label
         self.incorrect_answers_label: ttk.Label
         self.trainer = MathTrainer()
-        self.current_exercise: Optional[Exercise] = None
+        self.current_exercise: Exercise | None = None
         self.current_state = AppState.WELCOME
         self.colors = get_colors()
 

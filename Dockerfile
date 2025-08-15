@@ -1,5 +1,5 @@
 # Ultra-lightweight Alpine-based build
-FROM python:3.11-alpine AS builder
+FROM python:3.13-alpine AS builder
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
@@ -22,7 +22,7 @@ COPY pyproject.toml uv.lock README.md ./
 RUN uv sync --frozen --no-dev
 
 # Production stage
-FROM python:3.11-alpine AS production
+FROM python:3.13-alpine AS production
 
 # Set environment variables for production
 ENV PYTHONUNBUFFERED=1

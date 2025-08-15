@@ -2,7 +2,7 @@
 
 import subprocess
 import time
-from typing import Generator
+from collections.abc import Generator
 
 import pytest
 import requests
@@ -75,7 +75,7 @@ class DockerContainer:
 
 
 @pytest.fixture(scope="session")
-def docker_container() -> Generator[DockerContainer, None, None]:
+def docker_container() -> Generator[DockerContainer]:
     """Pytest fixture to manage Docker container lifecycle."""
     if not docker_available():
         pytest.skip("Docker is not available or not running")

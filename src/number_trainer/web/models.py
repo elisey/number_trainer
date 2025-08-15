@@ -1,7 +1,5 @@
 """Pydantic models for web API."""
 
-from typing import Optional
-
 from pydantic import BaseModel
 
 
@@ -24,7 +22,7 @@ class AnswerRequest(BaseModel):
 
     exercise_id: str
     answer: int
-    time_taken: Optional[float] = None
+    time_taken: float | None = None
 
 
 class AnswerResponse(BaseModel):
@@ -33,7 +31,7 @@ class AnswerResponse(BaseModel):
     correct: bool
     correct_answer: int
     message: str
-    time_taken: Optional[float] = None
+    time_taken: float | None = None
 
 
 class StatsResponse(BaseModel):
@@ -43,4 +41,4 @@ class StatsResponse(BaseModel):
     correct_answers: int
     incorrect_answers: int
     accuracy: float
-    average_time: Optional[float] = None
+    average_time: float | None = None
