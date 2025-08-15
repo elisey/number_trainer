@@ -1,16 +1,4 @@
 repos:
-  # Local repository for running task ci
-  - repo: local
-    hooks:
-      - id: task-ci
-        name: Task CI
-        entry: task ci
-        language: system
-        pass_filenames: false
-        always_run: true
-        description: "Run all code quality checks via task ci"
-
-  # Additional hooks for improving code quality
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
@@ -23,3 +11,12 @@ repos:
       - id: check-docstring-first
       - id: check-json
       - id: debug-statements
+  - repo: local
+    hooks:
+      - id: task-checks
+        name: Task quality checks
+        entry: task checks
+        language: system
+        pass_filenames: false
+        always_run: true
+        description: "Run code quality checks via task"
