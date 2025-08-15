@@ -118,6 +118,16 @@ git tag -a "v$version" -m "Release v$version"
 echo "🔄  Pushing tag..."
 git push origin "v$version"
 
+echo "🔄  Switching to main branch..."
+git checkout main
+git pull origin main
+
+if git branch --merged main | grep -q "release/v$version"; then
+    git branch -d "release/v$version"
+else
+    echo "⚠️  release/v$version not fully merged into main. Use -D to force delete."
+fi
+
 echo "🚀  Creating GitHub Release..."
 gh release create "v$version" \
   --title "Release v$version" \

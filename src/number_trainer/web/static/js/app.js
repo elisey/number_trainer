@@ -18,8 +18,15 @@ class NumberTrainerApp {
     setupEventListeners() {
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && document.getElementById('exercise-screen').style.display !== 'none') {
-                this.checkAnswer();
+            if (e.key === 'Enter') {
+                const exerciseScreen = document.getElementById('exercise-screen');
+                const resultScreen = document.getElementById('result-screen');
+
+                if (!exerciseScreen.classList.contains('hidden')) {
+                    this.checkAnswer();
+                } else if (!resultScreen.classList.contains('hidden')) {
+                    this.nextExercise();
+                }
             } else if (e.key === 'Escape') {
                 this.showWelcome();
             } else if (e.ctrlKey && e.key === 'n') {
@@ -147,13 +154,6 @@ class NumberTrainerApp {
         detailsEl.textContent = details;
 
         this.showScreen('result-screen');
-
-        // Auto-advance to next exercise after 3 seconds for correct answers
-        if (result.correct) {
-            setTimeout(() => {
-                this.nextExercise();
-            }, 2000);
-        }
     }
 
     async nextExercise() {
