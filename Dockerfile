@@ -50,4 +50,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/api/health || exit 1
 
 # Run the application in production mode
-CMD ["uv", "run", "python", "-m", "src.number_trainer.web.production"]
+CMD [".venv/bin/python", "-m", "src.number_trainer.web.production"]

@@ -44,7 +44,7 @@ tasks:
       - "{{.UV_CMD}} run {{.PYTHON_CMD}} web_main.py"
 
   # Testing
-  test:
+  test-all:
     desc: "Run tests with code coverage"
     deps: [install]
     cmds:
@@ -54,6 +54,28 @@ tasks:
       - "tests/**/*.py"
     generates:
       - htmlcov/
+
+  test:
+    desc: "Run unit tests only (excluding integration tests)"
+    deps: [install]
+    cmds:
+      - "{{.UV_CMD}} run pytest tests/ -m 'not integration' --cov=src/number_trainer --cov-report=term-missing --cov-report=html"
+    sources:
+      - "src/**/*.py"
+      - "tests/**/*.py"
+    generates:
+      - htmlcov/
+
+  test-integration:
+    desc: "Run integration tests (requires Docker)"
+    deps: [install]
+    cmds:
+      - "{{.UV_CMD}} run pytest tests/integration/ -m integration -v"
+    sources:
+      - "src/**/*.py"
+      - "tests/integration/**/*.py"
+      - "Dockerfile"
+      - "docker-compose.yml"
 
   test-watch:
     desc: "Run tests in watch mode"
@@ -114,6 +136,12 @@ tasks:
     deps: [install-hooks]
     cmds:
       - "{{.UV_CMD}} run pre-commit run --all-files"
+
+  ci-long:
+    desc: "Run all checks as in CI including integration tests"
+    cmds:
+      - task: ci
+      - task: test-integration
 
   # Cleanup
   clean:
