@@ -143,6 +143,23 @@ tasks:
       - task: ci
       - task: test-integration
 
+  # Icon generation
+  setup-node:
+    desc: "Initialize Node.js and install dependencies for icon generation"
+    cmds:
+      - npm init -y
+      - npm install sharp
+    sources:
+      - package.json
+    generates:
+      - node_modules/
+
+  generate-icons:
+    desc: "Generate PWA icons from SVG source"
+    deps: [setup-node]
+    cmds:
+      - "node utils/generate_pwa_icons.js src/number_trainer/web/static/icons/math_training_icon.svg src/number_trainer/web/static/icons"
+
   # Cleanup
   clean:
     desc: "Clean temporary files"

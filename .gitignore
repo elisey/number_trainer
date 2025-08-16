@@ -22,3 +22,6 @@ htmlcov/
 ._*
 
 .task
+.claude/
+
+node_modules/

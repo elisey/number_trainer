@@ -3,7 +3,9 @@
     "allow": [
       "Bash(task test:*)",
       "Bash(git add:*)",
-      "Bash(docker build:*)"
+      "Bash(docker build:*)",
+      "Bash(git log:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []
