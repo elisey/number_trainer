@@ -7,6 +7,7 @@ class NumberTrainerApp {
         this.currentDifficulty = 1;
         this.startTime = null;
         this.isMobile = this.detectMobile();
+        this.userTriggeredAction = false;
         this.init();
     }
 
@@ -77,6 +78,14 @@ class NumberTrainerApp {
             if (this.isIOS()) {
                 document.querySelector('meta[name=viewport]').setAttribute('content',
                     'width=device-width, initial-scale=1.0, user-scalable=no');
+            }
+        });
+
+        // Force keyboard to open on mobile when input is shown
+        answerInput.addEventListener('touchstart', (e) => {
+            if (this.isMobile) {
+                e.target.focus();
+                e.target.click();
             }
         });
 
@@ -171,9 +180,37 @@ class NumberTrainerApp {
 
         // Focus on answer input if showing exercise screen
         if (screenId === 'exercise-screen') {
-            setTimeout(() => {
-                document.getElementById('answer-input').focus();
-            }, 100);
+            const focusInput = () => {
+                const answerInput = document.getElementById('answer-input');
+                if (!answerInput) return;
+
+                // Only auto-focus if this was triggered by user action
+                if (this.userTriggeredAction && this.isMobile) {
+                    // Force focus and keyboard on mobile
+                    answerInput.focus();
+
+                    // For iOS devices, use different approach
+                    if (this.isIOS()) {
+                        // Create a fake click event to trigger keyboard
+                        const event = new Event('click', { bubbles: true });
+                        answerInput.dispatchEvent(event);
+                    } else {
+                        // For Android, try multiple methods
+                        answerInput.click();
+                        answerInput.select();
+                    }
+
+                    this.userTriggeredAction = false; // Reset flag
+                } else if (!this.isMobile) {
+                    // Auto-focus works fine on desktop
+                    answerInput.focus();
+                }
+            };
+
+            // Use requestAnimationFrame for better timing
+            requestAnimationFrame(() => {
+                setTimeout(focusInput, 100);
+            });
         }
     }
 
@@ -184,6 +221,7 @@ class NumberTrainerApp {
 
     async startTraining(difficulty) {
         this.currentDifficulty = difficulty;
+        this.userTriggeredAction = true; // Mark as user-triggered action
         await this.generateNewExercise();
     }
 
@@ -274,6 +312,7 @@ class NumberTrainerApp {
     }
 
     async nextExercise() {
+        this.userTriggeredAction = true; // Mark as user-triggered action
         await this.generateNewExercise();
     }
 

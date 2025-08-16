@@ -225,7 +225,7 @@ h2 {
     }
 
     h1 {
-        font-size: 2rem;
+        display: none;
     }
 
     .card {
@@ -259,7 +259,7 @@ h2 {
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.75rem;
+        display: none;
     }
 
     .question {
@@ -307,6 +307,84 @@ h2 {
 #answer-input:focus {
     outline: 2px solid #2563eb;
     outline-offset: 2px;
+}
+
+/* Back button - completely hidden by default */
+.back-btn {
+    display: none !important;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+}
+
+
+/* Visibility classes - Default for desktop */
+.mobile-only {
+    display: none !important;
+}
+
+.desktop-only {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .mobile-only {
+        display: flex !important;
+    }
+
+    .desktop-only {
+        display: none !important;
+    }
+
+    /* Back button styles - only on mobile */
+    .back-btn {
+        display: flex !important;
+        position: fixed !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(37, 99, 235, 0.2);
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        z-index: 100;
+        color: #2563eb;
+        font-size: 16px;
+        font-weight: 600;
+        align-items: center;
+        gap: 6px;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-btn:hover {
+        background: rgba(37, 99, 235, 0.15);
+        border-color: rgba(37, 99, 235, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .back-btn:active {
+        transform: scale(0.98);
+        background: rgba(37, 99, 235, 0.25);
+    }
+
+    .back-btn::before {
+        content: "←";
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .back-btn::after {
+        content: "Back";
+    }
+
+    /* Ensure container has padding for fixed button */
+    .container {
+        padding-top: 80px;
+    }
 }
 
 
@@ -447,8 +525,7 @@ h2 {
     }
 
     h1 {
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
+        display: none;
     }
 
     .btn {
@@ -549,8 +626,7 @@ h2 {
     }
 
     h1 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
+        display: none;
     }
 
     .question {

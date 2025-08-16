@@ -211,24 +211,26 @@ async def read_root() -> str:
                 </div>
 
                 <div id="exercise-screen" class="screen hidden">
+                    <button class="back-btn mobile-only" onclick="showWelcome()"></button>
                     <div class="card">
                         <div id="question" class="question"></div>
                         <input type="number" id="answer-input" placeholder="Enter answer"
                                inputmode="numeric" pattern="[0-9]*" autofocus>
                         <div class="button-group">
                             <button class="btn btn-success" onclick="checkAnswer()">Check</button>
-                            <button class="btn btn-secondary" onclick="showWelcome()">Main Menu</button>
+                            <button class="btn btn-secondary desktop-only" onclick="showWelcome()">Main Menu</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="result-screen" class="screen hidden">
+                    <button class="back-btn mobile-only" onclick="showWelcome()"></button>
                     <div class="card">
                         <div id="result-message" class="result-message"></div>
                         <div id="result-details" class="result-details"></div>
                         <div class="button-group">
                             <button class="btn btn-primary" onclick="nextExercise()">Next Exercise</button>
-                            <button class="btn btn-secondary" onclick="showWelcome()">Main Menu</button>
+                            <button class="btn btn-secondary desktop-only" onclick="showWelcome()">Main Menu</button>
                         </div>
                     </div>
                 </div>
