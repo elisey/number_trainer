@@ -1,0 +1,27 @@
+{
+  "name": "number_trainer",
+  "version": "1.0.0",
+  "description": "Mathematical trainer for practice arithmetic with support for GUI, console, and web interfaces.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "generate-icons": "node generate-pwa-icons.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elisey/number_trainer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/elisey/number_trainer/issues"
+  },
+  "homepage": "https://github.com/elisey/number_trainer#readme",
+  "dependencies": {
+    "sharp": "^0.34.3"
+  }
+}

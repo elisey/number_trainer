@@ -7,6 +7,9 @@
 - Keep commit messages clean without Claude Code references
 - Same applies to PR/MR descriptions
 
+## Rules
+- All documentation put into docs dir
+
 ## Project Overview
 Number Trainer is a mathematical exercise application designed to help users practice basic arithmetic (addition/subtraction) with different difficulty levels. The project demonstrates modern Python development practices with multiple interfaces and comprehensive testing.
 
