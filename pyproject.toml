@@ -1,6 +1,6 @@
 [project]
 name = "number-trainer"
-version = "0.3.0"
+version = "0.3.1"
 description = "Number training application with tkinter GUI"
 readme = "README.md"
 requires-python = ">=3.13"
