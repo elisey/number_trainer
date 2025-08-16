@@ -63,6 +63,11 @@ jobs:
     - name: Install dependencies
       run: uv sync --group dev
 
+    - name: Install Task
+      uses: arduino/setup-task@v1
+      with:
+        version: '3.x'
+
     - name: Build and test Docker image using integration tests
       run: |
         echo "Running Docker integration tests..."
